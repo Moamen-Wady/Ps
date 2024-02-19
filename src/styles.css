@@ -1,0 +1,460 @@
+@import url("https://fonts.googleapis.com/css2?family=Roboto:ital,wght@0,100;0,300;0,400;0,500;0,700;0,900;1,100;1,300;1,400;1,500;1,700;1,900&display=swap");
+@import url("https://fonts.googleapis.com/css2?family=Protest+Revolution&display=swap");
+@import url("https://fonts.googleapis.com/css2?family=Sixtyfour&display=swap");
+@import url("https://fonts.googleapis.com/css2?family=Titillium+Web:ital,wght@0,200;0,300;0,400;0,600;0,700;0,900;1,200;1,300;1,400;1,600;1,700&display=swap");
+@media only screen and (min-width: 2001px) {
+    :root {
+        --nr01: 0.2rem;
+        --nr05: 1rem;
+        --nr08: 1.6rem;
+        --nr1: 2rem;
+        --nr101: 2.2rem;
+        --nr102: 2.4rem;
+        --nr103: 2.6rem;
+        --nr104: 2.8rem;
+        --nr105: 3rem;
+        --nr106: 3.2rem;
+        --nr2: 4rem;
+        --nr3: 6rem;
+        --nr4: 8rem;
+        --nr5: 10rem;
+    }
+}
+@media only screen and (max-width: 2000px) {
+    :root {
+        --nr01: 0.15rem;
+        --nr05: 0.75rem;
+        --nr08: 1.2rem;
+        --nr1: 1.5rem;
+        --nr101: 1.6rem;
+        --nr102: 1.7rem;
+        --nr103: 1.9rem;
+        --nr104: 2rem;
+        --nr105: 2.2rem;
+        --nr106: 2.3rem;
+        --nr2: 3rem;
+        --nr3: 4.5rem;
+        --nr4: 6rem;
+        --nr5: 7.5rem;
+    }
+}
+@media only screen and (max-width: 1670px) {
+    :root {
+        --nr01: 0.1rem;
+        --nr05: 0.5rem;
+        --nr08: 0.8rem;
+        --nr1: 1rem;
+        --nr101: 1.1rem;
+        --nr102: 1.2rem;
+        --nr103: 1.3rem;
+        --nr104: 1.4rem;
+        --nr105: 1.5rem;
+        --nr106: 1.6rem;
+        --nr2: 2rem;
+        --nr3: 3rem;
+        --nr4: 4rem;
+        --nr5: 5rem;
+    }
+}
+@media only screen and (max-width: 1024px) {
+    :root {
+        --nr01: 0.075rem;
+        --nr05: 0.35rem;
+        --nr08: 0.56rem;
+        --nr1: 0.7rem;
+        --nr101: 0.8rem;
+        --nr102: 0.9rem;
+        --nr103: 1rem;
+        --nr104: 1.2rem;
+        --nr105: 1.3rem;
+        --nr106: 1.4rem;
+        --nr2: 1.4rem;
+        --nr3: 2.1rem;
+        --nr4: 2.8rem;
+        --nr5: 3.5rem;
+    }
+}
+@media only screen and (max-width: 768px) {
+    :root {
+        --nr01: 0.05rem;
+        --nr05: 0.25rem;
+        --nr08: 0.4rem;
+        --nr1: 0.5rem;
+        --nr101: 0.55rem;
+        --nr102: 0.6rem;
+        --nr103: 0.7rem;
+        --nr104: 0.7rem;
+        --nr105: 0.75rem;
+        --nr106: 0.8rem;
+        --nr2: 1rem;
+        --nr3: 1.5rem;
+        --nr4: 2rem;
+        --nr5: 2.5rem;
+    }
+}
+@media only screen and (max-width: 530px) {
+    :root {
+        --nr01: 0.05rem;
+        --nr05: 0.25rem;
+        --nr08: 0.4rem;
+        --nr1: 0.5rem;
+        --nr101: 0.8rem;
+        --nr102: 0.9rem;
+        --nr103: 1rem;
+        --nr104: 1.2rem;
+        --nr105: 1.3rem;
+        --nr106: 1.4rem;
+        --nr2: 1.4rem;
+        --nr3: 1.5rem;
+        --nr4: 2rem;
+        --nr5: 2.5rem;
+    }
+    body .options {
+        width: 100%;
+    }
+    body .fulltablecont {
+        width: 95%;
+    }
+    body .asset {
+        width: 70%;
+        margin-bottom: var(--nr1);
+    }
+    body .tabs {
+        background-color: #0f021c;
+    }
+    body .trlink {
+        font-size: var(--nr104);
+    }
+}
+@media only screen and (max-width: 375px) {
+    :root {
+        --nr01: 0.04rem;
+        --nr05: 0.2rem;
+        --nr08: 0.3rem;
+        --nr1: 0.4rem;
+        --nr101: 0.5rem;
+        --nr102: 0.8rem;
+        --nr103: 0.9rem;
+        --nr104: 1.1rem;
+        --nr105: 1.2rem;
+        --nr106: 1.3rem;
+        --nr2: 1rem;
+        --nr3: 1.2rem;
+        --nr4: 1.6rem;
+        --nr5: 2rem;
+    }
+    body .nameInput {
+        font-size: var(--nr102);
+    }
+}
+body {
+    margin: 0;
+    padding: 0;
+    background-image: linear-gradient(to bottom, #0f021c, #2a0f44);
+    background-position: center;
+    background-repeat: no-repeat;
+    background-size: cover;
+    background-attachment: fixed;
+    text-transform: capitalize;
+    box-sizing: border-box;
+}
+header {
+    height: calc(var(--nr4) * 10);
+    text-align: center;
+    /* box-shadow: calc(var(--nr01) * -1) calc(var(--nr01) * 1) 0 #fd1f8c,
+        calc(var(--nr01) * -2) calc(var(--nr01) * 2) 0 #49fc3e,
+        calc(var(--nr01) * -3) calc(var(--nr01) * 3) 0 #0d0200; */
+}
+.trlink {
+    font-size: var(--nr106);
+    all: unset;
+    rotate: -5deg;
+    position: fixed;
+    top: 5%;
+    right: 5%;
+    font-family: "Titillium Web", sans-serif;
+    color: whitesmoke;
+    margin: var(--nr1);
+    padding: var(--nr05);
+    box-shadow: 2px 2px 12px rgb(255, 255, 255);
+    border-radius: 5%;
+    border: calc(var(--nr05) / 2) solid rgb(199, 121, 199);
+    cursor: pointer;
+    transition-property: scale;
+    transition-duration: 0.2s;
+    transition-timing-function: ease-in-out;
+    animation-name: trlink;
+    animation-duration: 2s;
+    animation-iteration-count: infinite;
+    animation-delay: 1s;
+    animation-timing-function: ease-in-out;
+    background-image: linear-gradient(
+        to right bottom,
+        #a0154e,
+        #82154f,
+        #63164a,
+        #461641,
+        #2b1233,
+        #241634,
+        #1e1934,
+        #181b33,
+        #1d2a46,
+        #1f3959,
+        #1f4a6c,
+        #1b5b7e
+    );
+}
+.trlink:hover {
+    scale: 110%;
+    animation-name: none;
+}
+.hicont{
+width: 60%;
+display: block;
+margin: auto;
+text-align: center;
+}
+.headerimg {
+    width: 40%;
+}
+h1 {
+    color: white;
+    text-align: center;
+    font-family: "Protest Revolution", sans-serif;
+    font-size: var(--nr2);
+    text-shadow: 1.5px 1.5px 3px #8259ab;
+}
+@keyframes trlink {
+    0% {
+        rotate: -5deg;
+    }
+    7% {
+        rotate: 12deg;
+    }
+    17% {
+        rotate: -12deg;
+    }
+    24% {
+        rotate: -5deg;
+    }
+    100% {
+        rotate: -5deg;
+    }
+}
+
+/*///////////////////////////////////////////////////////*/
+
+.options {
+    width: 70%;
+    height: max-content;
+    margin: var(--nr1) auto;
+    padding: var(--nr05) 0;
+    color: white;
+    text-align: center;
+    background-image: linear-gradient(to bottom, #687cb5, grey, #687cb5);
+    box-shadow: calc(var(--nr01) * -1) calc(var(--nr01) * 1) 0 #fd1f8c,
+        calc(var(--nr01) * -2) calc(var(--nr01) * 2) 0 #49fc3e,
+        calc(var(--nr01) * -3) calc(var(--nr01) * 3) 0 #0d0200,
+        calc(var(--nr01) * 1) calc(var(--nr01) * -1) 0 #fd1f8c,
+        calc(var(--nr01) * 2) calc(var(--nr01) * -2) 0 #49fc3e,
+        calc(var(--nr01) * 3) calc(var(--nr01) * -3) 0 #0d0200;
+}
+
+.fulltablecont {
+    width: 80%;
+    margin: 0 auto;
+}
+.tabs {
+    display: flex;
+    width: 100%;
+    margin: var(--nr1) auto;
+    padding: 0;
+    flex-wrap: nowrap;
+    justify-content: space-between;
+    align-items: flex-start;
+    position: sticky;
+    top: 1%;
+    background-color: #0f021c;
+}
+.tab {
+    width: 31%;
+    margin: 0 auto;
+    padding: calc(var(--nr05) / 2);
+    box-shadow: calc(var(--nr01) * -1) calc(var(--nr01) * 1) 0 #fd1f8c,
+        calc(var(--nr01) * -2) calc(var(--nr01) * 2) 0 #49fc3e,
+        calc(var(--nr01) * -3) calc(var(--nr01) * 3) 0 #0d0200,
+        calc(var(--nr01) * 1) calc(var(--nr01) * -1) 0 #fd1f8c,
+        calc(var(--nr01) * 2) calc(var(--nr01) * -2) 0 #49fc3e,
+        calc(var(--nr01) * 3) calc(var(--nr01) * -3) 0 #0d0200;
+    cursor: pointer;
+    color: white;
+    border-radius: 2%;
+}
+.tab:hover {
+    background-color: rgb(53, 28, 53);
+}
+.tab:hover .h2 {
+    color: red;
+}
+p {
+    font-family: "Titillium Web", sans-serif;
+    font-size: var(--nr106);
+}
+.rnb:first-child {
+    all: unset;
+    text-shadow: 1.5px 1.5px 3px cyan;
+}
+.rnb:nth-child(2) {
+    all: unset;
+    text-shadow: 1.5px 1.5px 3px green;
+}
+.rnb:nth-child(3) {
+    all: unset;
+    text-shadow: 1.5px 1.5px 3px red;
+}
+.h2 {
+    color: white;
+    text-align: center;
+    font-family: "Protest Revolution", sans-serif;
+    font-size: var(--nr102);
+    text-shadow: 1.5px 1.5px 3px #8259ab;
+}
+.h3 {
+    color: white;
+    text-align: center;
+    font-size: var(--nr102);
+    text-shadow: 1.5px 1.5px 3px #8259ab;
+    font-family: "Titillium Web", sans-serif;
+}
+.date1 {
+    all: unset;
+    font-family: "Titillium Web", sans-serif;
+    background-color: #5e518d;
+    color: black;
+    text-transform: capitalize;
+    font-size: large;
+    overflow: visible;
+    display: flex;
+    align-items: flex-start;
+    justify-content: space-between;
+    flex-wrap: wrap;
+    margin: auto;
+    border: 2px solid #461641;
+    cursor: pointer;
+}
+.assets {
+    display: flex;
+    height: max-content;
+    width: 100%;
+    margin: 0 auto;
+    padding: 0;
+    flex-wrap: wrap;
+    justify-content: space-evenly;
+    align-items: flex-start;
+}
+.asset {
+    width: 28%;
+    height: max-content;
+    margin: 0 auto;
+    padding: calc(var(--nr05) / 2);
+    box-shadow: calc(var(--nr01) * -1) calc(var(--nr01) * 1) 0 #fd1f8c,
+        calc(var(--nr01) * -2) calc(var(--nr01) * 2) 0 #49fc3e,
+        calc(var(--nr01) * -3) calc(var(--nr01) * 3) 0 #0d0200,
+        calc(var(--nr01) * 1) calc(var(--nr01) * -1) 0 #fd1f8c,
+        calc(var(--nr01) * 2) calc(var(--nr01) * -2) 0 #49fc3e,
+        calc(var(--nr01) * 3) calc(var(--nr01) * -3) 0 #0d0200;
+    cursor: pointer;
+    color: white;
+}
+.asset:hover {
+    background-color: rgb(53, 28, 53);
+}
+.asset:hover .h2 {
+    color: red;
+}
+.assetimg {
+    width: 100%;
+    object-fit: contain;
+}
+.timePeriods {
+    display: flex;
+    width: 100%;
+    margin: var(--nr1) auto;
+    padding: calc(var(--nr05) / 2) auto;
+    align-items: flex-start;
+    justify-content: center;
+    flex-wrap: wrap;
+}
+.container {
+    display: block;
+    position: relative;
+    padding: calc(var(--nr05) / 2) 0;
+    margin: var(--nr102) 0;
+    cursor: pointer;
+    font-size: var(--nr102);
+    -webkit-user-select: none;
+    -moz-user-select: none;
+    -ms-user-select: none;
+    user-select: none;
+    color: black;
+    width: max-content;
+    border: #0d0200 1px solid;
+    text-shadow: 1.5px 1.5px 3px blue;
+    white-space: pre;
+}
+.container input {
+    position: absolute;
+    opacity: 0;
+    cursor: pointer;
+    height: 0;
+    width: 0;
+}
+.checkmark {
+    position: absolute;
+    top: 100%;
+    left: 0%;
+    height: 100%;
+    width: 100%;
+    background-color: whitesmoke;
+}
+.container:hover input ~ .checkmark {
+    background-color: #ccc;
+}
+.container input:checked ~ .checkmark {
+    background-color: #49fc3e;
+}
+.checkmark:after {
+    content: "";
+    position: absolute;
+    display: none;
+}
+.container input:checked ~ .checkmark:after {
+    display: block;
+}
+.nameInput {
+    display: block;
+    margin: auto;
+    font-family: "Titillium Web", sans-serif;
+    font-size: var(--nr101);
+    font-weight: bold;
+    width: 50%;
+    color: #5e0d0d;
+}
+.submit {
+    font-size: var(--nr102);
+    padding: calc(var(--nr05) / 2);
+    display: block;
+    margin: var(--nr1) auto;
+    width: fit-content;
+    color: #49fc3e;
+    text-shadow: 1.5px 1.5px 3px blue;
+    background-color: #a0154e;
+    font-family: "Protest Revolution", sans-serif;
+    text-transform: uppercase;
+    border-radius: 2%;
+    border: 2px solid black;
+    cursor: pointer;
+}
+.submit:hover {
+    background-color: #5e0d0d;
+}
