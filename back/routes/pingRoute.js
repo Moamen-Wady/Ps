@@ -5,29 +5,58 @@ const Ping = require( '../models/pingSchema' );
 router.route( '/ping' )
 
 router.put( '/ping', async ( req, res ) => {
-    var resv = req.body.resv;
-    var number = req.body.number;
-    await Ping.findOne( { Number: number } ).then(
+    var dateVal = req.body.dateVal
+    var tp = req.body.tp
+    var name = req.body.name
+    var num = req.body.num
+    await Ping.findOne( { num: num } ).then(
         async ( ping ) => {
-            console.log( ping )
             let pingResv = ping.Reservations
-            await Ping.updateOne(
-                { "Number": number },
-                { $set: { Reservations: [ ...pingResv, resv ] } }
-            )
-
+            if ( !pingResv[ dateVal ] ) {
+                await Ping.updateOne(
+                    { "num": num },
+                    { $set: { Reservations: { ...pingResv, [ dateVal ]: { tp: tp, names: { [ name ]: tp } } } } }
+                ).then(
+                    res.send( { sts: 'ok' } )
+                ).catch(
+                    ( err ) => { res.send( { sts: 'fail', err: err } ) }
+                )
+            }
+            else {
+                if ( pingResv[ dateVal ].hasOwnProperty( 'tp' ) && pingResv[ dateVal ].tp.includes( tp ) ) { res.send( { sts: 'fail', err: 'tp' } ) }
+                if ( pingResv[ dateVal ].hasOwnProperty( 'names' ) && pingResv[ dateVal ].names.hasOwnProperty( name ) ) { res.send( { sts: 'fail', err: 'name' } ) }
+                var prevnames = pingResv[ dateVal ].names
+                var allnames = { ...prevnames, ...{ [ name ]: tp } }
+                var newtp = [ ...pingResv[ dateVal ].tp ]
+                tp.forEach( element => {
+                    newtp = [ ...newtp, element ]
+                } );
+                await Ping.updateOne(
+                    { "num": num },
+                    { $set: { Reservations: { ...pingResv, [ dateVal ]: { tp: newtp, names: allnames } } } }
+                ).then(
+                    res.send( { sts: 'ok' } )
+                ).catch(
+                    ( err ) => { res.send( { sts: 'fail', err: err } ) }
+                )
+            }
         }
+    ).catch(
+        ( err ) => { res.send( { sts: 'fail', err: err } ) }
     )
-    // await ( Seat.bulkWrite( bulkArr, { ordered: true } ) )
-    //     .then( () => res.send( {
-    //         status: 'ok'
-    //     } ) )
-    //     .catch( ( err ) => {
-    //         res.send( {
-    //             status: 'fail',
-    //             result: err.message
-    //         } )
-    //     } )
 } );
+
+router.get( '/ping/:id', async ( req, res ) => {
+    await Ping.findOne( { num: req.params.id } )
+        .catch( ( err ) => {
+            console.log( err );
+            res.send( { sts: 'fail' } )
+        } ).then(
+            ( object ) => {
+                console.log( object )
+                res.send( { sts: 'ok', object: object } )
+            }
+        )
+} )
 
 module.exports = router;

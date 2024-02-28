@@ -5,7 +5,7 @@ const pingSchema = new mongoose.Schema( {
         type: mongoose.SchemaTypes.Mixed,
         required: true
     },
-    Number: { type: Number, required: true }
+    num: { type: Number, required: true }
 } )
 
 const Ping = mongoose.model( 'Ping', pingSchema )

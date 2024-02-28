@@ -147,6 +147,11 @@
         font-size: var(--nr102);
     }
 }
+
+/*
+Home Page
+*/
+
 body {
     margin: 0;
     padding: 0;
@@ -208,11 +213,11 @@ header {
     scale: 110%;
     animation-name: none;
 }
-.hicont{
-width: 60%;
-display: block;
-margin: auto;
-text-align: center;
+.hicont {
+    width: 60%;
+    display: block;
+    margin: auto;
+    text-align: center;
 }
 .headerimg {
     width: 40%;
@@ -242,23 +247,9 @@ h1 {
     }
 }
 
-/*///////////////////////////////////////////////////////*/
-
-.options {
-    width: 70%;
-    height: max-content;
-    margin: var(--nr1) auto;
-    padding: var(--nr05) 0;
-    color: white;
-    text-align: center;
-    background-image: linear-gradient(to bottom, #687cb5, grey, #687cb5);
-    box-shadow: calc(var(--nr01) * -1) calc(var(--nr01) * 1) 0 #fd1f8c,
-        calc(var(--nr01) * -2) calc(var(--nr01) * 2) 0 #49fc3e,
-        calc(var(--nr01) * -3) calc(var(--nr01) * 3) 0 #0d0200,
-        calc(var(--nr01) * 1) calc(var(--nr01) * -1) 0 #fd1f8c,
-        calc(var(--nr01) * 2) calc(var(--nr01) * -2) 0 #49fc3e,
-        calc(var(--nr01) * 3) calc(var(--nr01) * -3) 0 #0d0200;
-}
+/*
+Book Page
+*/
 
 .fulltablecont {
     width: 80%;
@@ -376,6 +367,36 @@ p {
     width: 100%;
     object-fit: contain;
 }
+
+/*
+    Asset Page
+*/
+
+.options {
+    width: 70%;
+    height: max-content;
+    margin: var(--nr1) auto;
+    padding: var(--nr05) 0;
+    color: white;
+    text-align: center;
+    background-image: linear-gradient(to bottom, #687cb5, grey, #687cb5);
+    box-shadow: calc(var(--nr01) * -1) calc(var(--nr01) * 1) 0 #fd1f8c,
+        calc(var(--nr01) * -2) calc(var(--nr01) * 2) 0 #49fc3e,
+        calc(var(--nr01) * -3) calc(var(--nr01) * 3) 0 #0d0200,
+        calc(var(--nr01) * 1) calc(var(--nr01) * -1) 0 #fd1f8c,
+        calc(var(--nr01) * 2) calc(var(--nr01) * -2) 0 #49fc3e,
+        calc(var(--nr01) * 3) calc(var(--nr01) * -3) 0 #0d0200;
+}
+.h3form {
+    color: white;
+    text-align: center;
+    font-size: var(--nr102);
+    text-shadow: 1.5px 1.5px 1px #c23e2d;
+    font-family: "Titillium Web", sans-serif;
+}
+#times input {
+    all: unset;
+}
 .timePeriods {
     display: flex;
     width: 100%;
@@ -415,13 +436,17 @@ p {
     left: 0%;
     height: 100%;
     width: 100%;
+    max-width: 100%;
+    box-sizing: border-box;
     background-color: whitesmoke;
+    border: 2px solid transparent;
 }
 .container:hover input ~ .checkmark {
     background-color: #ccc;
 }
 .container input:checked ~ .checkmark {
-    background-color: #49fc3e;
+    background-color: limegreen;
+    border: 2px solid rgb(3, 71, 3);
 }
 .checkmark:after {
     content: "";
@@ -457,4 +482,18 @@ p {
 }
 .submit:hover {
     background-color: #5e0d0d;
+}
+.invoice {
+    width: 100dvw;
+    height: 100dvh;
+    position: fixed ;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    box-shadow: calc(var(--nr01) * -1) calc(var(--nr01) * 1) 0 #fd1f8c,
+        calc(var(--nr01) * -2) calc(var(--nr01) * 2) 0 #49fc3e,
+        calc(var(--nr01) * -3) calc(var(--nr01) * 3) 0 #0d0200,
+        calc(var(--nr01) * 1) calc(var(--nr01) * -1) 0 #fd1f8c,
+        calc(var(--nr01) * 2) calc(var(--nr01) * -2) 0 #49fc3e,
+        calc(var(--nr01) * 3) calc(var(--nr01) * -3) 0 #0d0200;
 }
