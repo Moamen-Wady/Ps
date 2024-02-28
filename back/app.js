@@ -5,7 +5,7 @@ const helmet = require( 'helmet' );
 const compression = require( 'compression' );
 const app = express();
 const corsOptions = {
-    origin: [ 'http://localhost:3000' ],
+    origin: [ 'http://localhost:3000', 'https://test.damansolutions.com', 'https://test.damansolutions.com/' ],
     credentials: true,
     optionSuccessStatus: 200
 }
