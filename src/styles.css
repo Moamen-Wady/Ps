@@ -15,6 +15,7 @@
         --nr105: 3rem;
         --nr106: 3.2rem;
         --nr2: 4rem;
+        --nr205: 5rem;
         --nr3: 6rem;
         --nr4: 8rem;
         --nr5: 10rem;
@@ -33,6 +34,7 @@
         --nr105: 2.2rem;
         --nr106: 2.3rem;
         --nr2: 3rem;
+        --nr205: 3.75rem;
         --nr3: 4.5rem;
         --nr4: 6rem;
         --nr5: 7.5rem;
@@ -51,6 +53,7 @@
         --nr105: 1.5rem;
         --nr106: 1.6rem;
         --nr2: 2rem;
+        --nr205: 2.5rem;
         --nr3: 3rem;
         --nr4: 4rem;
         --nr5: 5rem;
@@ -69,12 +72,38 @@
         --nr105: 1.3rem;
         --nr106: 1.4rem;
         --nr2: 1.4rem;
+        --nr205: 1.75rem;
         --nr3: 2.1rem;
         --nr4: 2.8rem;
         --nr5: 3.5rem;
     }
+    body .headerimg {
+        width: 35%;
+    }
 }
 @media only screen and (max-width: 768px) {
+    :root {
+        --nr01: 0.075rem;
+        --nr05: 0.35rem;
+        --nr08: 0.56rem;
+        --nr1: 0.7rem;
+        --nr101: 0.8rem;
+        --nr102: 0.9rem;
+        --nr103: 1rem;
+        --nr104: 1.2rem;
+        --nr105: 1.3rem;
+        --nr106: 1.4rem;
+        --nr2: 1.4rem;
+        --nr205: 1.75rem;
+        --nr3: 2.1rem;
+        --nr4: 2.8rem;
+        --nr5: 3.5rem;
+    }
+    body .headerimg {
+        width: 40%;
+    }
+}
+/* @media only screen and (max-width: 768px) {
     :root {
         --nr01: 0.05rem;
         --nr05: 0.25rem;
@@ -91,7 +120,7 @@
         --nr4: 2rem;
         --nr5: 2.5rem;
     }
-}
+} */
 @media only screen and (max-width: 530px) {
     :root {
         --nr01: 0.05rem;
@@ -105,28 +134,39 @@
         --nr105: 1.3rem;
         --nr106: 1.4rem;
         --nr2: 1.4rem;
+        --nr205: 1.75rem;
         --nr3: 1.5rem;
         --nr4: 2rem;
         --nr5: 2.5rem;
     }
-    body .options {
-        width: 100%;
+    body .headerimg {
+        width: 50%;
     }
+    /* body .options {
+        width: 90%;
+    } */
     body .fulltablecont {
         width: 95%;
     }
     body .asset {
-        width: 70%;
-        margin-bottom: var(--nr1);
+        width: 60%;
+        margin-bottom: var(--nr2);
     }
     body .tabs {
+        margin-bottom: var(--nr2);
         background-color: #0f021c;
     }
     body .trlink {
-        font-size: var(--nr104);
+        font-size: var(--nr3);
+    }
+    body .h2 {
+        font-size: var(--nr2);
+    }
+    body .h4 {
+        font-size: var(--nr2);
     }
 }
-@media only screen and (max-width: 375px) {
+@media only screen and (max-width: 395px) {
     :root {
         --nr01: 0.04rem;
         --nr05: 0.2rem;
@@ -139,12 +179,22 @@
         --nr105: 1.2rem;
         --nr106: 1.3rem;
         --nr2: 1rem;
+        --nr205: 1.25rem;
         --nr3: 1.2rem;
         --nr4: 1.6rem;
         --nr5: 2rem;
     }
+    body .headerimg {
+        width: 60%;
+    }
     body .nameInput {
-        font-size: var(--nr102);
+        font-size: var(--nr3);
+    }
+    body h1 {
+        font-size: calc(var(--nr3) * 1.5);
+    }
+    body .h4 {
+        font-size: calc(var(--nr2) * 1.2);
     }
 }
 
@@ -171,11 +221,11 @@ header {
         calc(var(--nr01) * -3) calc(var(--nr01) * 3) 0 #0d0200; */
 }
 .trlink {
-    font-size: var(--nr106);
     all: unset;
-    rotate: -5deg;
+    font-size: var(--nr106);
+    rotate: -15deg;
     position: fixed;
-    top: 5%;
+    top: 10%;
     right: 5%;
     font-family: "Titillium Web", sans-serif;
     color: whitesmoke;
@@ -213,25 +263,19 @@ header {
     scale: 110%;
     animation-name: none;
 }
-.hicont {
-    width: 60%;
-    display: block;
-    margin: auto;
-    text-align: center;
-}
 .headerimg {
-    width: 40%;
+    width: 30%;
 }
 h1 {
     color: white;
     text-align: center;
     font-family: "Protest Revolution", sans-serif;
-    font-size: var(--nr2);
+    font-size: var(--nr205);
     text-shadow: 1.5px 1.5px 3px #8259ab;
 }
 @keyframes trlink {
     0% {
-        rotate: -5deg;
+        rotate: -15deg;
     }
     7% {
         rotate: 12deg;
@@ -240,10 +284,10 @@ h1 {
         rotate: -12deg;
     }
     24% {
-        rotate: -5deg;
+        rotate: -15deg;
     }
     100% {
-        rotate: -5deg;
+        rotate: -15deg;
     }
 }
 
@@ -252,8 +296,9 @@ Book Page
 */
 
 .fulltablecont {
-    width: 80%;
-    margin: 0 auto;
+    width: 85%;
+    margin: auto;
+    margin-bottom: var(--nr2);
 }
 .tabs {
     display: flex;
@@ -287,10 +332,6 @@ Book Page
 .tab:hover .h2 {
     color: red;
 }
-p {
-    font-family: "Titillium Web", sans-serif;
-    font-size: var(--nr106);
-}
 .rnb:first-child {
     all: unset;
     text-shadow: 1.5px 1.5px 3px cyan;
@@ -307,31 +348,22 @@ p {
     color: white;
     text-align: center;
     font-family: "Protest Revolution", sans-serif;
-    font-size: var(--nr102);
+    font-size: var(--nr104);
+    text-shadow: 1.5px 1.5px 3px #8259ab;
+}
+.h4 {
+    color: white;
+    text-align: center;
+    font-family: "Protest Revolution", sans-serif;
+    font-size: var(--nr104);
     text-shadow: 1.5px 1.5px 3px #8259ab;
 }
 .h3 {
     color: white;
     text-align: center;
-    font-size: var(--nr102);
+    font-size: var(--nr104);
     text-shadow: 1.5px 1.5px 3px #8259ab;
     font-family: "Titillium Web", sans-serif;
-}
-.date1 {
-    all: unset;
-    font-family: "Titillium Web", sans-serif;
-    background-color: #5e518d;
-    color: black;
-    text-transform: capitalize;
-    font-size: large;
-    overflow: visible;
-    display: flex;
-    align-items: flex-start;
-    justify-content: space-between;
-    flex-wrap: wrap;
-    margin: auto;
-    border: 2px solid #461641;
-    cursor: pointer;
 }
 .assets {
     display: flex;
@@ -344,7 +376,7 @@ p {
     align-items: flex-start;
 }
 .asset {
-    width: 28%;
+    width: 30%;
     height: max-content;
     margin: 0 auto;
     padding: calc(var(--nr05) / 2);
@@ -372,11 +404,17 @@ p {
     Asset Page
 */
 
+.hicont {
+    width: 60%;
+    display: block;
+    margin: auto;
+    text-align: center;
+}
 .options {
-    width: 70%;
+    width: 90%;
     height: max-content;
     margin: var(--nr1) auto;
-    padding: var(--nr05) 0;
+    padding: var(--nr05);
     color: white;
     text-align: center;
     background-image: linear-gradient(to bottom, #687cb5, grey, #687cb5);
@@ -388,11 +426,35 @@ p {
         calc(var(--nr01) * 3) calc(var(--nr01) * -3) 0 #0d0200;
 }
 .h3form {
+    display: block;
+    margin: auto;
+    width: 90%;
     color: white;
     text-align: center;
     font-size: var(--nr102);
     text-shadow: 1.5px 1.5px 1px #c23e2d;
     font-family: "Titillium Web", sans-serif;
+}
+.date1 {
+    all: unset;
+    -webkit-min-logical-width: fit-content;
+    text-align: center;
+    font-family: "Titillium Web", sans-serif;
+    background-color: #5e518d;
+    color: black;
+    text-transform: capitalize;
+    font-size: large;
+    overflow: visible;
+    display: flex;
+    align-items: flex-start;
+    justify-content: center;
+    flex-wrap: wrap;
+    margin: auto;
+    border: 2px solid #461641;
+    cursor: pointer;
+}
+.date1::before {
+    content: "Chosen Date:";
 }
 #times input {
     all: unset;
@@ -486,7 +548,7 @@ p {
 .invoice {
     width: 100dvw;
     height: 100dvh;
-    position: fixed ;
+    position: fixed;
     top: 50%;
     left: 50%;
     transform: translate(-50%, -50%);

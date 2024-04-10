@@ -127,7 +127,7 @@ export default function Asset() {
         <h1 className='h1'>Unlock Your Potential </h1>
         <div className='options'>
             <h3 className='h3form'>Now Choose Your Desired Date & Time Then submit, You will then be redirected to payment page</h3>
-            <input type='date' className='date1' name='date' id='date' onChange={ changeDateVal } />
+            <input type='date' className='date1' name='date' id='date' onChange={ changeDateVal } placeholder='Choose Date' />
             <form id='times'>
                 <div className='timePeriods' >
                     {

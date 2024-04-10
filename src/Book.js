@@ -22,14 +22,6 @@ export default function Book() {
 
     var [ all, setAll ] = useState( [] )
 
-
-    // var [ all, setAll ] = useState(
-    //     {
-    //         pool: [ { "Reservations": {}, "num": 1 }, { "Reservations": {}, "num": 2 }, { "Reservations": {}, "num": 3 } ],
-    //         ps: [ { "Reservations": {}, "num": 1 }, { "Reservations": {}, "num": 2 }, { "Reservations": {}, "num": 3 } ],
-    //         ping: [ { "Reservations": {}, "num": 1 }, { "Reservations": {}, "num": 2 }, { "Reservations": {}, "num": 3 } ]
-    //     } )
-
     var [ type, setType ] = useState( 'ps' )
     const typerr = ( e ) => {
         setType( e.target.slot )
@@ -52,7 +44,7 @@ export default function Book() {
                         return (
                             <Link to={ '/book' + '/' + type + '/' + item.num } className='asset' key={ item.num }>
                                 <div key={ type.toString() + ' no. ' + item.num } >
-                                    <h1>{ type.toString() + ' no. ' + item.num }</h1>
+                                    <h4 className='h4'>{ type.toString() + ' no. ' + item.num }</h4>
                                     <img className='assetimg' src='pst.jpg' alt='' />
                                 </div>
                             </Link>
