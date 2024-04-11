@@ -1,15 +1,12 @@
-import React, { useRef, useState, useEffect } from 'react'
+import React, { useState, useEffect } from 'react'
 import api from './api'
 
-var timePeriods = [ "12:00", "12:30", "01:00", "01:30", "02:00", "02:30", "03:00", "03:30", "04:00", "04:30",
+var timePeriods = [
+    "12:00", "12:30", "01:00", "01:30", "02:00", "02:30", "03:00", "03:30", "04:00", "04:30",
     "05:00", "05:30", "06:00", "06:30", "07:00", "07:30", "08:00", "08:30", "09:00", "09:30", "10:00", "10:30",
-    "11:00", "11:30" ]
+    "11:00", "11:30"
+]
 
-Date.prototype.toDateInputValue = ( function () {
-    var local = new Date( this );
-    local.setMinutes( this.getMinutes() - this.getTimezoneOffset() );
-    return local.toJSON().slice( 0, 10 );
-} );
 export default function Asset() {
 
     //API CALLS
@@ -22,12 +19,8 @@ export default function Asset() {
                 } )
             .catch( () => { alert( 'network error' ) } )
     }
-    useEffect(
-        () => {
-            getObject( type, num )
-        }, []
-    )
     async function book() {
+        if ( dateVal == '' ) return;
         await api.put( `/${ type }`, {
             num: num,
             tp: tp,
@@ -53,14 +46,10 @@ export default function Asset() {
         setInvoice( p )
         setShow( 'block' )
     }
-    useEffect( () => {
-        if ( tp.length == 0 ) { setDisabled( true ) }
-        else { setDisabled( false ) }
-    } )
 
     var [ object, setObject ] = useState()
     var [ tp, setTp ] = useState( [] )
-    var [ dateVal, setDateVal ] = useState( 'x' )
+    var [ dateVal, setDateVal ] = useState( '' )
     var [ name, setName ] = useState( '' )
     var [ invoice, setInvoice ] = useState( <></> )
     var [ show, setShow ] = useState( 'none' )
@@ -72,6 +61,16 @@ export default function Asset() {
     var type = infoarr[ 0 ]
     var num = infoarr[ 1 ]
 
+    useEffect( () => {
+        if ( tp.length == 0 ) { setDisabled( true ) }
+        else { setDisabled( false ) }
+    }, [ tp.length ] )
+    useEffect(
+        () => {
+            getObject( type, num )
+        }, [ type, num ]
+    )
+
     const changeName = ( e ) => {
         setName( e.target.value )
     }
@@ -81,25 +80,21 @@ export default function Asset() {
         document.getElementById( 'nameInput' ).value = ''
         setTp( [] )
     }
-
     function onCheck( e, item ) {
         if ( e.target.checked ) {
             e.target.checked = true
             setTp( [ ...tp, item ] )
-            console.log( tp )
         }
         else {
             e.target.checked = false
             setTp( tp.filter( ( currItem ) => currItem !== item ) )
-            console.log( tp )
         }
     }
-
     const cellColor = ( period ) => {
         if ( !object ) { return 'red' }
         else if ( !object.Reservations ) { return 'limegreen' }
         else if ( !object.Reservations[ dateVal ] ) { return 'limegreen' }
-        else if ( object.Reservations[ dateVal ].hasOwnProperty('tp') == false ) { return 'limegreen' }
+        else if ( object.Reservations[ dateVal ].hasOwnProperty( 'tp' ) == false ) { return 'limegreen' }
         else if ( object.Reservations[ dateVal ].tp.includes( period ) ) { return 'red' }
         else { return 'limegreen' }
     }
@@ -119,10 +114,9 @@ export default function Asset() {
         else if ( object.Reservations[ dateVal ].names.hasOwnProperty( name ) ) { alert( 'Name Already used this day, enter another name' ) }
         else { book() }
     }
-
     return ( <>
         <div className='hicont'>
-            <img src="/logoiw.png" className='headerimg' />
+            <img src="/logoiw.png" alt='' className='headerimg' />
         </div>
         <h1 className='h1'>Unlock Your Potential </h1>
         <div className='options'>
@@ -162,7 +156,7 @@ export default function Asset() {
         </div>
         <div className='invoice' style={ { display: show } }>
             { invoice }
-            <a onClick={ () => setShow( 'none' ) }>Ok</a>
+            <button onClick={ () => setShow( 'none' ) }>Ok</button>
         </div>
     </>
     )
