@@ -1,44 +1,44 @@
 let ps = [
     {
         "Reservations": [],
-        "Number": 1
+        "num": 1
     },
     {
         "Reservations": [],
-        "Number": 2
+        "num": 2
     },
     {
         "Reservations": [],
-        "Number": 3
+        "num": 3
     }
 ]
 
 let pool = [
     {
-        Reservations: [ [] ],
-        Number: 1
+        "Reservations": [],
+        "num": 1
     },
     {
-        Reservations: [ [] ],
-        Number: 2
+        "Reservations": [],
+        "num": 2
     },
     {
-        Reservations: [ [] ],
-        Number: 3
+        "Reservations": [],
+        "num": 3
     }
 ]
 
 let ping = [
     {
-        Reservations: [ [] ],
-        Number: 1
+        "Reservations": [],
+        "num": 1
     },
     {
-        Reservations: [ [] ],
-        Number: 2
+        "Reservations": [],
+        "num": 2
     },
     {
-        Reservations: [ [] ],
-        Number: 3
+        "Reservations": [],
+        "num": 3
     }
 ]
