@@ -1,9 +1,10 @@
-import { useEffect, useState } from 'react';
+import { useEffect } from 'react';
 import { BrowserRouter as Router, Routes, Route } from 'react-router-dom'
 import './styles.css'
 import Home from './Home';
 import Book from './Book';
 import Asset from './asset';
+import Dashboard from './dashboard';
 
 function App() {
   useEffect(
@@ -23,8 +24,8 @@ function App() {
         <Route path='/home' element={ <Home /> } />
         <Route path='/' element={ <Home /> } />
         <Route path='/book' element={ <Book /> } />
+        <Route path='/dbrd' element={ <Dashboard /> } />
         <Route path='/book/:type/:no' element={ <Asset /> } />
-
       </Routes>
     </Router >
   );

@@ -10,12 +10,12 @@ router.put( '/ping', async ( req, res ) => {
     var name = req.body.name
     var num = req.body.num
     await Ping.findOne( { num: num } ).then(
-        async ( ping ) => {
-            let pingResv = ping.Reservations
-            if ( !pingResv[ dateVal ] ) {
+        async ( asset ) => {
+            let assetResv = asset.Reservations
+            if ( !assetResv[ dateVal ] ) {
                 await Ping.updateOne(
                     { "num": num },
-                    { $set: { Reservations: { ...pingResv, [ dateVal ]: { tp: tp, names: { [ name ]: tp } } } } }
+                    { $set: { Reservations: { ...assetResv, [ dateVal ]: { tp: tp, names: [ [ name ] ], Resvs: [ { name: name, tp: tp } ] } } } }
                 ).then(
                     res.send( { sts: 'ok' } )
                 ).catch(
@@ -23,17 +23,18 @@ router.put( '/ping', async ( req, res ) => {
                 )
             }
             else {
-                if ( pingResv[ dateVal ].hasOwnProperty( 'tp' ) && pingResv[ dateVal ].tp.includes( tp ) ) { res.send( { sts: 'fail', err: 'tp' } ) }
-                if ( pingResv[ dateVal ].hasOwnProperty( 'names' ) && pingResv[ dateVal ].names.hasOwnProperty( name ) ) { res.send( { sts: 'fail', err: 'name' } ) }
-                var prevnames = pingResv[ dateVal ].names
-                var allnames = { ...prevnames, ...{ [ name ]: tp } }
-                var newtp = [ ...pingResv[ dateVal ].tp ]
+                if ( assetResv[ dateVal ].hasOwnProperty( 'tp' ) && assetResv[ dateVal ].tp.includes( tp ) ) { res.send( { sts: 'fail', err: 'tp' } ) }
+                if ( assetResv[ dateVal ].hasOwnProperty( 'names' ) && assetResv[ dateVal ].names.includes( name ) ) { res.send( { sts: 'fail', err: 'name' } ) }
+                var prevnames = assetResv[ dateVal ].names
+                var allnames = [ ...prevnames, [ name ] ]
+                var newtp = [ ...assetResv[ dateVal ].tp ]
                 tp.forEach( element => {
                     newtp = [ ...newtp, element ]
                 } );
+                var allResvs = [ ...assetResv[ dateVal ].Resvs, { name: name, tp: tp } ]
                 await Ping.updateOne(
                     { "num": num },
-                    { $set: { Reservations: { ...pingResv, [ dateVal ]: { tp: newtp, names: allnames } } } }
+                    { $set: { Reservations: { ...assetResv, [ dateVal ]: { tp: newtp, names: allnames, Resvs: allResvs } } } }
                 ).then(
                     res.send( { sts: 'ok' } )
                 ).catch(
@@ -58,5 +59,6 @@ router.get( '/ping/:id', async ( req, res ) => {
             }
         )
 } )
+
 
 module.exports = router;

@@ -10,12 +10,12 @@ router.put( '/pool', async ( req, res ) => {
     var name = req.body.name
     var num = req.body.num
     await Pool.findOne( { num: num } ).then(
-        async ( pool ) => {
-            let poolResv = pool.Reservations
-            if ( !poolResv[ dateVal ] ) {
+        async ( asset ) => {
+            let assetResv = asset.Reservations
+            if ( !assetResv[ dateVal ] ) {
                 await Pool.updateOne(
                     { "num": num },
-                    { $set: { Reservations: { ...poolResv, [ dateVal ]: { tp: tp, names: { [ name ]: tp } } } } }
+                    { $set: { Reservations: { ...assetResv, [ dateVal ]: { tp: tp, names: [ [ name ] ], Resvs: [ { name: name, tp: tp } ] } } } }
                 ).then(
                     res.send( { sts: 'ok' } )
                 ).catch(
@@ -23,17 +23,18 @@ router.put( '/pool', async ( req, res ) => {
                 )
             }
             else {
-                if ( poolResv[ dateVal ].hasOwnProperty( 'tp' ) && poolResv[ dateVal ].tp.includes( tp ) ) { res.send( { sts: 'fail', err: 'tp' } ) }
-                if ( poolResv[ dateVal ].hasOwnProperty( 'names' ) && poolResv[ dateVal ].names.hasOwnProperty( name ) ) { res.send( { sts: 'fail', err: 'name' } ) }
-                var prevnames = poolResv[ dateVal ].names
-                var allnames = { ...prevnames, ...{ [ name ]: tp } }
-                var newtp = [ ...poolResv[ dateVal ].tp ]
+                if ( assetResv[ dateVal ].hasOwnProperty( 'tp' ) && assetResv[ dateVal ].tp.includes( tp ) ) { res.send( { sts: 'fail', err: 'tp' } ) }
+                if ( assetResv[ dateVal ].hasOwnProperty( 'names' ) && assetResv[ dateVal ].names.includes( name ) ) { res.send( { sts: 'fail', err: 'name' } ) }
+                var prevnames = assetResv[ dateVal ].names
+                var allnames = [ ...prevnames, [ name ] ]
+                var newtp = [ ...assetResv[ dateVal ].tp ]
                 tp.forEach( element => {
                     newtp = [ ...newtp, element ]
                 } );
+                var allResvs = [ ...assetResv[ dateVal ].Resvs, { name: name, tp: tp } ]
                 await Pool.updateOne(
                     { "num": num },
-                    { $set: { Reservations: { ...poolResv, [ dateVal ]: { tp: newtp, names: allnames } } } }
+                    { $set: { Reservations: { ...assetResv, [ dateVal ]: { tp: newtp, names: allnames, Resvs: allResvs } } } }
                 ).then(
                     res.send( { sts: 'ok' } )
                 ).catch(
@@ -46,7 +47,6 @@ router.put( '/pool', async ( req, res ) => {
     )
 } );
 
-
 router.get( '/pool/:id', async ( req, res ) => {
     await Pool.findOne( { num: req.params.id } )
         .catch( ( err ) => {
@@ -54,8 +54,7 @@ router.get( '/pool/:id', async ( req, res ) => {
             res.send( { sts: 'fail' } )
         } ).then(
             ( object ) => {
-                var resv = object.Reservations
-                console.log( resv )
+                console.log( object )
                 res.send( { sts: 'ok', object: object } )
             }
         )

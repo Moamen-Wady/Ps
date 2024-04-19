@@ -559,3 +559,38 @@ Book Page
         calc(var(--nr01) * 2) calc(var(--nr01) * -2) 0 #49fc3e,
         calc(var(--nr01) * 3) calc(var(--nr01) * -3) 0 #0d0200;
 }
+button {
+    all: unset;
+}
+
+/*//Dashboard/*/
+table {
+    width: 100%;
+    margin: auto;
+    border: 2px solid whitesmoke;
+    border-collapse: collapse;
+}
+thead {
+    display: flex;
+    width: 100%;
+    align-items: flex-start;
+    justify-content: center;
+}
+tbody {
+    display: flex;
+    width: 100%;
+    align-items: flex-start;
+    justify-content: center;
+}
+th {
+    all: unset; 
+    display: inline-block;
+    width: 33%;
+    border: 2px solid whitesmoke;
+}
+td {
+    all: unset;
+    display: inline-block;
+    width: 33%;
+    border: 2px solid whitesmoke;
+}

@@ -10,12 +10,12 @@ router.put( '/ps', async ( req, res ) => {
     var name = req.body.name
     var num = req.body.num
     await Ps.findOne( { num: num } ).then(
-        async ( ps ) => {
-            let psResv = ps.Reservations
-            if ( !psResv[ dateVal ] ) {
+        async ( asset ) => {
+            let assetResv = asset.Reservations
+            if ( !assetResv[ dateVal ] ) {
                 await Ps.updateOne(
                     { "num": num },
-                    { $set: { Reservations: { ...psResv, [ dateVal ]: { tp: tp, names: { [ name ]: tp } } } } }
+                    { $set: { Reservations: { ...assetResv, [ dateVal ]: { tp: tp, names: [ [ name ] ], Resvs: [ { name: name, tp: tp } ] } } } }
                 ).then(
                     res.send( { sts: 'ok' } )
                 ).catch(
@@ -23,17 +23,18 @@ router.put( '/ps', async ( req, res ) => {
                 )
             }
             else {
-                if ( psResv[ dateVal ].hasOwnProperty( 'tp' ) && psResv[ dateVal ].tp.includes( tp ) ) { res.send( { sts: 'fail', err: 'tp' } ) }
-                if ( psResv[ dateVal ].hasOwnProperty( 'names' ) && psResv[ dateVal ].names.hasOwnProperty( name ) ) { res.send( { sts: 'fail', err: 'name' } ) }
-                var prevnames = psResv[ dateVal ].names
-                var allnames = { ...prevnames, ...{ [ name ]: tp } }
-                var newtp = [ ...psResv[ dateVal ].tp ]
+                if ( assetResv[ dateVal ].hasOwnProperty( 'tp' ) && assetResv[ dateVal ].tp.includes( tp ) ) { res.send( { sts: 'fail', err: 'tp' } ) }
+                if ( assetResv[ dateVal ].hasOwnProperty( 'names' ) && assetResv[ dateVal ].names.includes( name ) ) { res.send( { sts: 'fail', err: 'name' } ) }
+                var prevnames = assetResv[ dateVal ].names
+                var allnames = [ ...prevnames, [ name ] ]
+                var newtp = [ ...assetResv[ dateVal ].tp ]
                 tp.forEach( element => {
                     newtp = [ ...newtp, element ]
                 } );
+                var allResvs = [ ...assetResv[ dateVal ].Resvs, { name: name, tp: tp } ]
                 await Ps.updateOne(
                     { "num": num },
-                    { $set: { Reservations: { ...psResv, [ dateVal ]: { tp: newtp, names: allnames } } } }
+                    { $set: { Reservations: { ...assetResv, [ dateVal ]: { tp: newtp, names: allnames, Resvs: allResvs } } } }
                 ).then(
                     res.send( { sts: 'ok' } )
                 ).catch(
