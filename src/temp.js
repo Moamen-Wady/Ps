@@ -1,7 +1,12 @@
 
 var [ all, setAll ] = useState(
     {
-        pool: [ { "Reservations": {}, "Number": 1 }, { "Reservations": {}, "Number": 2 }, { "Reservations": {}, "Number": 3 } ],
-        ps: [ { "Reservations": {}, "Number": 1 }, { "Reservations": {}, "Number": 2 }, { "Reservations": {}, "Number": 3 } ],
-        ping: [ { "Reservations": {}, "Number": 1 }, { "Reservations": {}, "Number": 2 }, { "Reservations": {}, "Number": 3 } ]
+        pool: [ { "Reservations": {}, "num": 1 }, { "Reservations": {}, "num": 2 }, { "Reservations": {}, "num": 3 } ],
+        ps: [ { "Reservations": {}, "num": 1 }, { "Reservations": {}, "num": 2 }, { "Reservations": {}, "num": 3 } ],
+        ping: [ { "Reservations": {}, "num": 1 }, { "Reservations": {}, "num": 2 }, { "Reservations": {}, "num": 3 } ]
     } )
+[
+    { "Reservations": {}, "num": 1 }, { "Reservations": {}, "num": 2 }, { "Reservations": {}, "num": 3 },
+    { "Reservations": {}, "num": 4 }, { "Reservations": {}, "num": 5 }, { "Reservations": {}, "num": 6 },
+    { "Reservations": {}, "num": 7 }, { "Reservations": {}, "num": 8 }, { "Reservations": {}, "num": 9 }
+]

@@ -80,6 +80,9 @@
     body .headerimg {
         width: 35%;
     }
+    body .homebtn {
+        height: var(--nr5);
+    }
 }
 @media only screen and (max-width: 768px) {
     :root {
@@ -102,25 +105,16 @@
     body .headerimg {
         width: 40%;
     }
-}
-/* @media only screen and (max-width: 768px) {
-    :root {
-        --nr01: 0.05rem;
-        --nr05: 0.25rem;
-        --nr08: 0.4rem;
-        --nr1: 0.5rem;
-        --nr101: 0.55rem;
-        --nr102: 0.6rem;
-        --nr103: 0.7rem;
-        --nr104: 0.7rem;
-        --nr105: 0.75rem;
-        --nr106: 0.8rem;
-        --nr2: 1rem;
-        --nr3: 1.5rem;
-        --nr4: 2rem;
-        --nr5: 2.5rem;
+    body .tab2 {
+        width: 12%;
     }
-} */
+    body .homebtn {
+        height: var(--nr4);
+    }
+    body .h22 {
+        font-size: var(--nr103);
+    }
+}
 @media only screen and (max-width: 530px) {
     :root {
         --nr01: 0.05rem;
@@ -142,9 +136,6 @@
     body .headerimg {
         width: 50%;
     }
-    /* body .options {
-        width: 90%;
-    } */
     body .fulltablecont {
         width: 95%;
     }
@@ -160,10 +151,28 @@
         font-size: var(--nr3);
     }
     body .h2 {
+        font-size: var(--nr104);
+    }
+    body .h22 {
         font-size: var(--nr2);
     }
     body .h4 {
         font-size: var(--nr2);
+    }
+    body td {
+        font-size: var(--nr102);
+    }
+    body table .opbt {
+        font-size: var(--nr102);
+    }
+    body .tab2 {
+        width: 18%;
+    }
+    body .homebtn {
+        height: calc(var(--nr4) * 1.4);
+    }
+    body .h22 {
+        font-size: var(--nr102);
     }
 }
 @media only screen and (max-width: 395px) {
@@ -188,7 +197,7 @@
         width: 60%;
     }
     body .nameInput {
-        font-size: var(--nr3);
+        font-size: var(--nr103);
     }
     body h1 {
         font-size: calc(var(--nr3) * 1.5);
@@ -196,12 +205,28 @@
     body .h4 {
         font-size: calc(var(--nr2) * 1.2);
     }
+    body td {
+        font-size: 0.6rem;
+    }
+    body table .opbt {
+        font-size: 0.6rem;
+    }
+    body .tab2 {
+        width: 22%;
+    }
+    body .homebtn {
+        height: calc(var(--nr4) * 1.5);
+    }
+    body .h22 {
+        font-size: var(--nr102);
+    }
+    body .h2 {
+        font-size: var(--nr103);
+    }
 }
-
 /*
 Home Page
 */
-
 body {
     margin: 0;
     padding: 0;
@@ -216,9 +241,6 @@ body {
 header {
     height: calc(var(--nr4) * 10);
     text-align: center;
-    /* box-shadow: calc(var(--nr01) * -1) calc(var(--nr01) * 1) 0 #fd1f8c,
-        calc(var(--nr01) * -2) calc(var(--nr01) * 2) 0 #49fc3e,
-        calc(var(--nr01) * -3) calc(var(--nr01) * 3) 0 #0d0200; */
 }
 .trlink {
     all: unset;
@@ -290,13 +312,11 @@ h1 {
         rotate: -15deg;
     }
 }
-
 /*
 Book Page
 */
-
 .fulltablecont {
-    width: 85%;
+    width: 90%;
     margin: auto;
     margin-bottom: var(--nr2);
 }
@@ -378,7 +398,7 @@ Book Page
 .asset {
     width: 30%;
     height: max-content;
-    margin: 0 auto;
+    margin: var(--nr05) auto;
     padding: calc(var(--nr05) / 2);
     box-shadow: calc(var(--nr01) * -1) calc(var(--nr01) * 1) 0 #fd1f8c,
         calc(var(--nr01) * -2) calc(var(--nr01) * 2) 0 #49fc3e,
@@ -399,11 +419,9 @@ Book Page
     width: 100%;
     object-fit: contain;
 }
-
 /*
     Asset Page
 */
-
 .hicont {
     width: 60%;
     display: block;
@@ -427,7 +445,7 @@ Book Page
 }
 .h3form {
     display: block;
-    margin: auto;
+    margin: var(--nr1) auto;
     width: 90%;
     color: white;
     text-align: center;
@@ -443,7 +461,7 @@ Book Page
     background-color: #5e518d;
     color: black;
     text-transform: capitalize;
-    font-size: large;
+    font-size: var(--nr103);
     overflow: visible;
     display: flex;
     align-items: flex-start;
@@ -452,6 +470,7 @@ Book Page
     margin: auto;
     border: 2px solid #461641;
     cursor: pointer;
+    padding: var(--nr01) calc(var(--nr01) * 2);
 }
 .date1::before {
     content: "Chosen Date:";
@@ -520,7 +539,7 @@ Book Page
 }
 .nameInput {
     display: block;
-    margin: auto;
+    margin: var(--nr101) auto;
     font-family: "Titillium Web", sans-serif;
     font-size: var(--nr101);
     font-weight: bold;
@@ -562,35 +581,192 @@ Book Page
 button {
     all: unset;
 }
-
-/*//Dashboard/*/
+/*Dashboard*/
+.tabs2 {
+    display: flex;
+    width: 100%;
+    margin: var(--nr1) auto;
+    padding: 0;
+    flex-wrap: nowrap;
+    justify-content: space-between;
+    align-items: flex-start;
+    background-color: #0f021c;
+}
+.tab2 {
+    width: 15%;
+    box-shadow: calc(var(--nr01) * -1) calc(var(--nr01) * 1) 0 #fd1f8c,
+        calc(var(--nr01) * -2) calc(var(--nr01) * 2) 0 #49fc3e,
+        calc(var(--nr01) * -3) calc(var(--nr01) * 3) 0 #0d0200,
+        calc(var(--nr01) * 1) calc(var(--nr01) * -1) 0 #fd1f8c,
+        calc(var(--nr01) * 2) calc(var(--nr01) * -2) 0 #49fc3e,
+        calc(var(--nr01) * 3) calc(var(--nr01) * -3) 0 #0d0200;
+    cursor: pointer;
+    color: white;
+    border-radius: 2%;
+}
+.tab2:hover {
+    background-color: rgb(53, 28, 53);
+}
+.tab2:hover .h22 {
+    color: red;
+}
+.h22 {
+    color: white;
+    text-align: center;
+    font-family: "Protest Revolution", sans-serif;
+    font-size: var(--nr104);
+    text-shadow: 1.5px 1.5px 3px #8259ab;
+}
 table {
     width: 100%;
-    margin: auto;
-    border: 2px solid whitesmoke;
-    border-collapse: collapse;
-}
-thead {
-    display: flex;
-    width: 100%;
-    align-items: flex-start;
-    justify-content: center;
-}
-tbody {
-    display: flex;
-    width: 100%;
-    align-items: flex-start;
-    justify-content: center;
-}
-th {
-    all: unset; 
-    display: inline-block;
-    width: 33%;
-    border: 2px solid whitesmoke;
+    margin: var(--nr1) auto;
+    box-shadow: calc(var(--nr01) * -1) calc(var(--nr01) * 1) 0 #fd1f8c,
+        calc(var(--nr01) * -2) calc(var(--nr01) * 2) 0 #49fc3e,
+        calc(var(--nr01) * -3) calc(var(--nr01) * 3) 0 #0d0200,
+        calc(var(--nr01) * 1) calc(var(--nr01) * -1) 0 #fd1f8c,
+        calc(var(--nr01) * 2) calc(var(--nr01) * -2) 0 #49fc3e,
+        calc(var(--nr01) * 3) calc(var(--nr01) * -3) 0 #0d0200;
 }
 td {
+    border: 3px solid darkred;
+    border-radius: 5%;
+    font-size: var(--nr102);
+    font-family: "Titillium Web", sans-serif;
+}
+table,
+tbody,
+thead,
+tr,
+th,
+td {
+    border-collapse: collapse;
+}
+.opbt {
     all: unset;
-    display: inline-block;
-    width: 33%;
-    border: 2px solid whitesmoke;
+    font-size: var(--nr102);
+    padding: calc(var(--nr05) / 2);
+    margin: var(--nr05);
+    display: inline;
+    width: fit-content;
+    color: #49fc3e;
+    text-shadow: 1.5px 1.5px 3px blue;
+    background-color: #a0154e;
+    font-family: "Titillium Web", sans-serif;
+    text-transform: uppercase;
+    border-radius: 2%;
+    border: 2px solid black;
+    cursor: pointer;
+    border-radius: 10%;
+}
+.opbt:hover {
+    background-color: #5e0d0d;
+}
+@keyframes comefromright {
+    from {
+        left: 100%;
+        opacity: 0;
+    }
+    to {
+        left: 75%;
+        opacity: 1;
+    }
+}
+@keyframes gotoright {
+    from {
+        left: 75%;
+        opacity: 1;
+    }
+    to {
+        left: 100%;
+        opacity: 0;
+    }
+}
+@keyframes comefromleft {
+    from {
+        opacity: 0;
+        left: -25%;
+    }
+    to {
+        left: 25%;
+        opacity: 1;
+    }
+}
+@keyframes gotoleft {
+    from {
+        opacity: 1;
+        left: 25%;
+    }
+    to {
+        left: -25%;
+        opacity: 0;
+    }
+}
+@keyframes midtoleft {
+    from {
+        left: 50%;
+        opacity: 1;
+    }
+    to {
+        left: 25%;
+        opacity: 1;
+    }
+}
+@keyframes lefttomid {
+    from {
+        opacity: 1;
+        left: 25%;
+    }
+    to {
+        left: 50%;
+        opacity: 1;
+    }
+}
+@keyframes righttomid {
+    from {
+        left: 75%;
+        opacity: 1;
+    }
+    to {
+        left: 50%;
+        opacity: 1;
+    }
+}
+@keyframes midtoright {
+    from {
+        opacity: 1;
+        left: 50%;
+    }
+    to {
+        left: 75%;
+        opacity: 1;
+    }
+}
+.sslide {
+    opacity: 0;
+    border-radius: 6%;
+    animation-duration: 0.5s;
+    animation-timing-function: ease-in-out;
+    animation-fill-mode: forwards;
+    transition-property: all;
+    transition-duration: 0.1s;
+    transition-timing-function: ease-in-out;
+    position: absolute;
+    left: 100%;
+    transform: translateX(-50%);
+    z-index: 5;
+}
+.homebtn {
+    z-index: 55000;
+    height: calc(var(--nr4) * 1.1);
+    width: fit-content;
+    background: rgb(255, 255, 255, 0.2);
+    border: 0;
+    display: inline;
+    cursor: pointer;
+}
+.homebtn > img {
+    display: inline;
+    width: var(--nr2);
+    vertical-align: bottom;
+    filter: invert(1);
 }

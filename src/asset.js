@@ -6,9 +6,7 @@ var timePeriods = [
     "05:00", "05:30", "06:00", "06:30", "07:00", "07:30", "08:00", "08:30", "09:00", "09:30", "10:00", "10:30",
     "11:00", "11:30"
 ]
-
 export default function Asset() {
-
     //API CALLS
     async function getObject( type, num ) {
         await api.get( `/${ type }/${ num }` )
@@ -20,12 +18,13 @@ export default function Asset() {
             .catch( () => { alert( 'network error' ) } )
     }
     async function book() {
-        if ( dateVal == '' ) return;
-        await api.put( `/${ type }`, {
+        if ( date == '' ) return;
+        await api.put( `/${ type }/y`, {
             num: num,
             tp: tp,
             name: name,
-            dateVal: dateVal
+            color: 'yellow',
+            date: date
         } ).then( ( data ) => {
             if ( data.data.sts == 'ok' ) {
                 alert( 'saved' ); setTimeout( () => {
@@ -46,10 +45,9 @@ export default function Asset() {
         setInvoice( p )
         setShow( 'block' )
     }
-
-    var [ object, setObject ] = useState()
+    var [ object, setObject ] = useState( {} )
     var [ tp, setTp ] = useState( [] )
-    var [ dateVal, setDateVal ] = useState( '' )
+    var [ date, setDate ] = useState( '' )
     var [ name, setName ] = useState( '' )
     var [ invoice, setInvoice ] = useState( <></> )
     var [ show, setShow ] = useState( 'none' )
@@ -74,8 +72,8 @@ export default function Asset() {
     const changeName = ( e ) => {
         setName( e.target.value )
     }
-    const changeDateVal = ( e ) => {
-        setDateVal( e.target.value )
+    const changeDate = ( e ) => {
+        setDate( e.target.value )
         document.getElementById( 'times' ).reset()
         document.getElementById( 'nameInput' ).value = ''
         setTp( [] )
@@ -91,27 +89,18 @@ export default function Asset() {
         }
     }
     const cellColor = ( period ) => {
-        if ( !object ) { return 'red' }
-        else if ( !object.Reservations ) { return 'limegreen' }
-        else if ( !object.Reservations[ dateVal ] ) { return 'limegreen' }
-        else if ( object.Reservations[ dateVal ].hasOwnProperty( 'tp' ) == false ) { return 'limegreen' }
-        else if ( object.Reservations[ dateVal ].tp.includes( period ) ) { return 'red' }
+        if ( object?.Reservations?.[ date ]?.yellow?.includes( period ) ) { return 'yellow' }
+        else if ( object?.Reservations?.[ date ]?.red?.includes( period ) ) { return 'red' }
         else { return 'limegreen' }
     }
     const cellCheck = ( period ) => {
-        if ( !object ) { return 'none' }
-        else if ( !object.Reservations ) { return 'all' }
-        else if ( !object.Reservations[ dateVal ] ) { return 'all' }
-        else if ( object.Reservations[ dateVal ].hasOwnProperty( 'tp' ) == false ) { return 'all' }
-        else if ( object.Reservations[ dateVal ].tp.includes( period ) ) { return 'none' }
+        if ( object?.Reservations?.[ date ]?.yellow?.includes( period ) ) { return 'none' }
+        else if ( object?.Reservations?.[ date ]?.red?.includes( period ) ) { return 'none' }
         else { return 'all' }
     }
     const nameCheck = () => {
-        if ( dateVal == '' || name == '' || tp.length == 0 ) { alert( 'PLEASE CHOOSE DATE, TIME PERIODS AND ENTER YOUR NAME' ) }
-        else if ( !object.Reservations ) { book(); return }
-        else if ( !object.Reservations[ dateVal ] ) { book(); return }
-        else if ( object.Reservations[ dateVal ].hasOwnProperty( 'names' ) == false ) { book(); }
-        else if ( object.Reservations[ dateVal ].names.hasOwnProperty( name ) ) { alert( 'Name Already used this day, enter another name' ) }
+        if ( date == '' || name == '' || tp.length == 0 ) { alert( 'PLEASE CHOOSE DATE, TIME PERIODS AND ENTER YOUR NAME' ); return }
+        else if ( object?.Reservations?.[ date ]?.names?.includes( name ) ) { alert( 'Name Already used this day, enter another name' ); return }
         else { book() }
     }
     return ( <>
@@ -121,11 +110,11 @@ export default function Asset() {
         <h1 className='h1'>Unlock Your Potential </h1>
         <div className='options'>
             <h3 className='h3form'>Now Choose Your Desired Date & Time Then submit, You will then be redirected to payment page</h3>
-            <input type='date' className='date1' name='date' id='date' onChange={ changeDateVal } placeholder='Choose Date' />
+            <input type='date' className='date1' name='date' id='date' onChange={ changeDate } placeholder='Choose Date' />
             <form id='times'>
                 <div className='timePeriods' >
                     {
-                        timePeriods.map( ( period ) => {
+                        timePeriods?.map( ( period ) => {
                             return (
                                 <label className="container" key={ period }
                                     style={ {
@@ -133,7 +122,7 @@ export default function Asset() {
                                         backgroundColor: 'whitesmoke'
                                     } }>
                                     { ' ' + period + ' ' }
-                                    <input type="checkbox" disabled={ dateVal == '' ? true : false } onChange={ ( e ) => onCheck( e, period ) }
+                                    <input type="checkbox" disabled={ date == '' ? true : false } onChange={ ( e ) => onCheck( e, period ) }
                                         style={ {
                                             pointerEvents: cellCheck( period ),
                                             backgroundColor: cellColor( period )

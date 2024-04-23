@@ -2,11 +2,7 @@ import React, { useEffect, useState } from 'react'
 import "./styles.css"
 import { Link, Outlet } from 'react-router-dom'
 import api from './api'
-
-
 export default function Book() {
-
-
     async function getAll() {
         await api.get( `/getall` )
             .then(
@@ -19,15 +15,11 @@ export default function Book() {
     useEffect(
         () => { getAll() }
         , [] )
-
     var [ all, setAll ] = useState( [] )
-
     var [ type, setType ] = useState( 'ps' )
     const typerr = ( e ) => {
         setType( e.target.slot )
     }
-
-
     return (
         <main>
             <h1>Welcome, Gamer...</h1>
@@ -46,7 +38,7 @@ export default function Book() {
                         <h2 className='h2' slot='ping'>ping pong</h2></div>
                 </div>
                 <div className='assets'>
-                    { all[ type ]?.map( ( item ) => {
+                    { all[ type ]?.sort( ( a, b ) => a.num - b.num ).map( ( item ) => {
                         return (
                             <Link to={ '/book/' + type + '/' + item.num } className='asset' key={ item.num }>
                                 <div key={ type.toString() + ' no. ' + item.num } >
