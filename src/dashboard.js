@@ -7,32 +7,33 @@ var timePeriods = [
     "11:00", "11:30"
 ]
 // API CALLS
-const getResvs = async ( cb ) => {
+const getResvs = async ( type, num, cb ) => {
     await api.get( '/getall' ).then( ( data ) => {
         if ( data.data.sts !== 'ok' ) { alert( 'network error' ); return }
         else { cb( data.data.all ) }
     } ).catch( ( err ) => alert( err ) )
 }
-const changer = async ( type, num, name, tp, date, color, cb, clearCb ) => {
+const changer = async ( type, num, name, tp, date, color, cb, getcb, clearCb, admin ) => {
     await api.put( `/${ type }/${ color.slice( 0, 1 ) }`, {
         num: num,
         tp: tp,
         name: name,
         color: color,
-        admin: true,
+        admin: admin,
         date: date
     } ).then( async ( data ) => {
         if ( data.data.sts == 'ok' ) {
+            await getcb( type, num, cb )
             alert( 'saved' );
-            await getResvs( cb )
             clearCb()
         }
         else {
-            if ( data.data.err == 'tp' )
+            if ( data.data.err == 'tp' ) {
+                await getcb( type, num, cb )
                 alert( 'We are sorry, the time periods was just reserved , please try again' )
-            else if ( data.data.err == 'name' )
-                alert( 'We are sorry, the name was just taken , please try again' )
-            else { alert( data.data.err.err ) }
+                clearCb()
+            }
+            else { alert( data.data.err ) }
         }
     } )
         .catch( err => alert( err ) )
@@ -51,8 +52,9 @@ const onCheck = ( e, tp, item, cb ) => {
         cb( tp.filter( ( currItem ) => currItem !== item ) )
     }
 }
-const changeDate = ( e, cb ) => {
+const changeDate = ( e, cb, clearCb ) => {
     cb( e.target.value )
+    clearCb()
 }
 const cellColor = ( object, period, date ) => {
     if ( object?.Reservations?.[ date ]?.yellow?.includes( period ) ) { return 'yellow' }
@@ -160,7 +162,7 @@ export default function Dashboard() {
     var [ type, setType ] = useState( 'ps' )
     var [ cli, setCli ] = useState( 1 )
     useEffect( () => {
-        getResvs( setall )
+        getResvs( '', '', setall )
     }, [ date ] )
     useEffect( () => {
         if ( ftp.length == 0 ) { setDisabled( true ) }
@@ -176,7 +178,6 @@ export default function Dashboard() {
         document.querySelectorAll( 'input#nameInput' ).forEach( ( i ) => {
             i.value = ''
         } )
-
     }
     //SLIDER
     const sslider = useCallback(
@@ -241,9 +242,9 @@ export default function Dashboard() {
                                             <td>
                                                 <span
                                                     style={ { all: 'unset', display: 'flex', alignItems: 'flex-start', justifyContent: 'space-evenly' } }>
-                                                    <button className='opbt' onClick={ () => changer( type, object.num, i.name, i.tp, date, 'red', setall, clear ) } style={ { display: 'inline' } }>Confirm</button>
-                                                    <button className='opbt' onClick={ () => changer( type, object.num, i.name, i.tp, date, 'yellow', setall, clear ) } style={ { display: 'inline' } }>Hold</button>
-                                                    <button className='opbt' onClick={ () => changer( type, object.num, i.name, i.tp, date, 'green', setall, clear ) } style={ { display: 'inline' } }>Cancel</button>
+                                                    <button className='opbt' onClick={ () => changer( type, object.num, i.name, i.tp, date, 'red', setall, getResvs, clear, 1 ) } style={ { display: 'inline' } }>Confirm</button>
+                                                    <button className='opbt' onClick={ () => changer( type, object.num, i.name, i.tp, date, 'yellow', setall, getResvs, clear, 1 ) } style={ { display: 'inline' } }>Hold</button>
+                                                    <button className='opbt' onClick={ () => changer( type, object.num, i.name, i.tp, date, 'green', setall, getResvs, clear, 1 ) } style={ { display: 'inline' } }>Cancel</button>
                                                 </span>
                                             </td>
                                         </tr>
@@ -253,7 +254,7 @@ export default function Dashboard() {
                         }
                     </tbody>
                 </table>
-                <input type='date' className='date1' name='date' id='date' onChange={ ( e ) => changeDate( e, setDate ) } placeholder='Choose Date' />
+                <input type='date' className='date1' name='date' id='date' onChange={ ( e ) => changeDate( e, setDate, clear ) } placeholder='Choose Date' />
                 <form id='times'>
                     <div className='timePeriods' >
                         {
@@ -283,8 +284,8 @@ export default function Dashboard() {
                     </div>
                 </form>
                 <input type='text' className='nameInput' id='nameInput' placeholder='admin' onChange={ ( e ) => changeName( e, setFname ) } disabled={ disabled } />
-                <button className='opbt' onClick={ () => changer( type, object.num, fname, ftp, date, 'red', setall, clear ) } style={ { display: 'inline' } }>Confirm</button>
-                <button className='opbt' onClick={ () => changer( type, object.num, fname, ftp, date, 'yellow', setall, clear ) } style={ { display: 'inline' } }>Hold</button>
+                <button className='opbt' onClick={ () => changer( type, object.num, fname, ftp, date, 'red', setall, getResvs, clear, 1 ) } style={ { display: 'inline' } }>Confirm</button>
+                <button className='opbt' onClick={ () => changer( type, object.num, fname, ftp, date, 'yellow', setall, getResvs, clear, 1 ) } style={ { display: 'inline' } }>Hold</button>
             </div>
         </>
     )

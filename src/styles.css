@@ -237,6 +237,7 @@ body {
     background-attachment: fixed;
     text-transform: capitalize;
     box-sizing: border-box;
+    overflow-x: hidden;
 }
 header {
     height: calc(var(--nr4) * 10);
@@ -316,6 +317,7 @@ h1 {
 Book Page
 */
 .fulltablecont {
+    overflow: hidden;
     width: 90%;
     margin: auto;
     margin-bottom: var(--nr2);
@@ -583,6 +585,7 @@ button {
 }
 /*Dashboard*/
 .tabs2 {
+    overflow: hidden;
     display: flex;
     width: 100%;
     margin: var(--nr1) auto;

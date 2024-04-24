@@ -25,44 +25,42 @@ router.put( '/pool/y', async ( req, res ) => {
                 )
             }
             else {
-                if ( !admin ) {
+                if ( admin !== 1 ) {
                     tp.map( ( i ) => {
                         if ( assetResv[ date ].yellow?.includes( i ) || assetResv[ date ].red?.includes( i ) ) {
                             throw new Error( 'tp' )
                         }
-                    } )
+                    } );
+                }
+                var prevnames = assetResv[ date ].names
+                var allnames
+                if ( prevnames.includes( name ) ) {
+                    allnames = [ ...prevnames ]
                 }
                 else {
-                    var prevnames = assetResv[ date ].names
-                    var allnames
-                    if ( prevnames.includes( name ) ) {
-                        allnames = [ ...prevnames ]
-                    }
-                    else {
-                        allnames = [ ...prevnames, name ]
-                    }
-                    var yellowtp = []
-                    if ( assetResv[ date ][ color ] ) {
-                        yellowtp = [ ...assetResv[ date ][ color ] ]
-                    }
-                    tp.forEach( element => {
-                        yellowtp = [ ...yellowtp, element ]
-                    } );
-                    var redtp = []
-                    if ( assetResv[ date ].red ) {
-                        redtp = [ ...assetResv[ date ].red.filter( ( i ) => { return !tp.includes( i ) } ) ]
-                    }
-                    var allResvs
-                    allResvs = [ ...assetResv[ date ].Resvs.filter( ( i ) => { return i.name !== name } ), { name: name, tp: tp, color: color } ]
-                    await Pool.updateOne(
-                        { "num": num },
-                        { $set: { Reservations: { ...assetResv, [ date ]: { red: redtp, yellow: yellowtp, names: allnames, Resvs: allResvs } } } }
-                    ).then(
-                        res.send( { sts: 'ok' } )
-                    ).catch(
-                        ( err ) => { res.send( { sts: 'fail', err: err } ) }
-                    )
+                    allnames = [ ...prevnames, name ]
                 }
+                var yellowtp = []
+                if ( assetResv[ date ][ color ] ) {
+                    yellowtp = [ ...assetResv[ date ][ color ] ]
+                }
+                tp.forEach( element => {
+                    yellowtp = [ ...yellowtp, element ]
+                } );
+                var redtp = []
+                if ( assetResv[ date ].red ) {
+                    redtp = [ ...assetResv[ date ].red.filter( ( i ) => { return !tp.includes( i ) } ) ]
+                }
+                var allResvs
+                allResvs = [ ...assetResv[ date ].Resvs.filter( ( i ) => { return i.name !== name } ), { name: name, tp: tp, color: color } ]
+                await Pool.updateOne(
+                    { "num": num },
+                    { $set: { Reservations: { ...assetResv, [ date ]: { red: redtp, yellow: yellowtp, names: allnames, Resvs: allResvs } } } }
+                ).then(
+                    res.send( { sts: 'ok' } )
+                ).catch(
+                    ( err ) => { res.send( { sts: 'fail', err: err } ) }
+                )
             }
         }
     ).catch(
@@ -90,44 +88,42 @@ router.put( '/pool/r', async ( req, res ) => {
                 )
             }
             else {
-                if ( !admin ) {
+                if ( admin !== 1 ) {
                     tp.map( ( i ) => {
                         if ( assetResv[ date ].yellow?.includes( i ) || assetResv[ date ].red?.includes( i ) ) {
                             throw new Error( 'tp' )
                         }
-                    } )
+                    } );
+                }
+                var prevnames = assetResv[ date ].names
+                var allnames
+                if ( prevnames.includes( name ) ) {
+                    allnames = [ ...prevnames ]
                 }
                 else {
-                    var prevnames = assetResv[ date ].names
-                    var allnames
-                    if ( prevnames.includes( name ) ) {
-                        allnames = [ ...prevnames ]
-                    }
-                    else {
-                        allnames = [ ...prevnames, name ]
-                    }
-                    var redtp = []
-                    if ( assetResv[ date ][ color ] ) {
-                        redtp = [ ...assetResv[ date ][ color ] ]
-                    }
-                    tp.forEach( element => {
-                        redtp = [ ...redtp, element ]
-                    } );
-                    var yellowtp = []
-                    if ( assetResv[ date ].yellow ) {
-                        yellowtp = assetResv[ date ].yellow.filter( ( i ) => { return !tp.includes( i ) } )
-                    }
-                    var allResvs
-                    allResvs = [ ...assetResv[ date ].Resvs.filter( ( i ) => { return i.name !== name } ), { name: name, tp: tp, color: color } ]
-                    await Pool.updateOne(
-                        { "num": num },
-                        { $set: { Reservations: { ...assetResv, [ date ]: { yellow: yellowtp, red: redtp, names: allnames, Resvs: allResvs } } } }
-                    ).then(
-                        res.send( { sts: 'ok' } )
-                    ).catch(
-                        ( err ) => { res.send( { sts: 'fail', err: err.message } ) }
-                    )
+                    allnames = [ ...prevnames, name ]
                 }
+                var redtp = []
+                if ( assetResv[ date ][ color ] ) {
+                    redtp = [ ...assetResv[ date ][ color ] ]
+                }
+                tp.forEach( element => {
+                    redtp = [ ...redtp, element ]
+                } );
+                var yellowtp = []
+                if ( assetResv[ date ].yellow ) {
+                    yellowtp = assetResv[ date ].yellow.filter( ( i ) => { return !tp.includes( i ) } )
+                }
+                var allResvs
+                allResvs = [ ...assetResv[ date ].Resvs.filter( ( i ) => { return i.name !== name } ), { name: name, tp: tp, color: color } ]
+                await Pool.updateOne(
+                    { "num": num },
+                    { $set: { Reservations: { ...assetResv, [ date ]: { yellow: yellowtp, red: redtp, names: allnames, Resvs: allResvs } } } }
+                ).then(
+                    res.send( { sts: 'ok' } )
+                ).catch(
+                    ( err ) => { res.send( { sts: 'fail', err: err.message } ) }
+                )
             }
         }
     ).catch(
@@ -157,33 +153,31 @@ router.put( '/pool/g', async ( req, res ) => {
                 return
             }
             else {
-                if ( !admin ) {
+                if ( admin !== 1 ) {
                     tp.map( ( i ) => {
                         if ( assetResv[ date ].yellow?.includes( i ) || assetResv[ date ].red?.includes( i ) ) {
                             throw new Error( 'tp' )
                         }
-                    } )
+                    } );
                 }
-                else {
-                    var prevnames = assetResv[ date ].names
-                    var allnames = prevnames.filter( ( i ) => { return i !== name } )
-                    var yellowtp = []
-                    var redtp = []
-                    if ( assetResv[ date ].yellow ) {
-                        yellowtp = assetResv[ date ].yellow.filter( ( i ) => { return !tp.includes( i ) } )
-                    }
-                    if ( assetResv[ date ].red ) {
-                        redtp = assetResv[ date ].red.filter( ( i ) => { return !tp.includes( i ) } )
-                    }
-                    await Pool.updateOne(
-                        { "num": num },
-                        { $set: { Reservations: { ...assetResv, [ date ]: { red: redtp, yellow: yellowtp, names: allnames, Resvs: allResvs } } } }
-                    ).then(
-                        res.send( { sts: 'ok' } )
-                    ).catch(
-                        ( err ) => { res.send( { sts: 'fail', err: err } ) }
-                    )
+                var prevnames = assetResv[ date ].names
+                var allnames = prevnames.filter( ( i ) => { return i !== name } )
+                var yellowtp = []
+                var redtp = []
+                if ( assetResv[ date ].yellow ) {
+                    yellowtp = assetResv[ date ].yellow.filter( ( i ) => { return !tp.includes( i ) } )
                 }
+                if ( assetResv[ date ].red ) {
+                    redtp = assetResv[ date ].red.filter( ( i ) => { return !tp.includes( i ) } )
+                }
+                await Pool.updateOne(
+                    { "num": num },
+                    { $set: { Reservations: { ...assetResv, [ date ]: { red: redtp, yellow: yellowtp, names: allnames, Resvs: allResvs } } } }
+                ).then(
+                    res.send( { sts: 'ok' } )
+                ).catch(
+                    ( err ) => { res.send( { sts: 'fail', err: err } ) }
+                )
             }
         }
     ).catch(
