@@ -1,71 +1,11 @@
 import React, { useCallback, useEffect, useState } from 'react'
-import api from './api'
 import "./styles.css"
-var timePeriods = [
+const timePeriods = [
     "12:00", "12:30", "01:00", "01:30", "02:00", "02:30", "03:00", "03:30", "04:00", "04:30",
     "05:00", "05:30", "06:00", "06:30", "07:00", "07:30", "08:00", "08:30", "09:00", "09:30", "10:00", "10:30",
     "11:00", "11:30"
 ]
-// API CALLS
-const getResvs = async ( type, num, cb ) => {
-    await api.get( '/getall' ).then( ( data ) => {
-        if ( data.data.sts !== 'ok' ) { alert( 'network error' ); return }
-        else { cb( data.data.all ) }
-    } ).catch( ( err ) => alert( err ) )
-}
-const changer = async ( type, num, name, tp, date, color, cb, getcb, clearCb, admin ) => {
-    await api.put( `/${ type }/${ color.slice( 0, 1 ) }`, {
-        num: num,
-        tp: tp,
-        name: name,
-        color: color,
-        admin: admin,
-        date: date
-    } ).then( async ( data ) => {
-        if ( data.data.sts == 'ok' ) {
-            await getcb( type, num, cb )
-            alert( 'saved' );
-            clearCb()
-        }
-        else {
-            if ( data.data.err == 'tp' ) {
-                await getcb( type, num, cb )
-                alert( 'We are sorry, the time periods was just reserved , please try again' )
-                clearCb()
-            }
-            else { alert( data.data.err ) }
-        }
-    } )
-        .catch( err => alert( err ) )
-}
 // PROPERTIES AND STATES MODIFIERS
-const changeName = ( e, cb ) => {
-    cb( e.target.value )
-}
-const onCheck = ( e, tp, item, cb ) => {
-    if ( e.target.checked ) {
-        e.target.checked = true
-        cb( [ ...tp, item ] )
-    }
-    else {
-        e.target.checked = false
-        cb( tp.filter( ( currItem ) => currItem !== item ) )
-    }
-}
-const changeDate = ( e, cb, clearCb ) => {
-    cb( e.target.value )
-    clearCb()
-}
-const cellColor = ( object, period, date ) => {
-    if ( object?.Reservations?.[ date ]?.yellow?.includes( period ) ) { return 'yellow' }
-    else if ( object?.Reservations?.[ date ]?.red?.includes( period ) ) { return 'red' }
-    else { return 'limegreen' }
-}
-const cellCheck = ( object, period, date ) => {
-    if ( object?.Reservations?.[ date ]?.yellow?.includes( period ) ) { return 'none' }
-    else if ( object?.Reservations?.[ date ]?.red?.includes( period ) ) { return 'none' }
-    else { return 'all' }
-}
 const typerr = ( e, cb1, cb2 ) => {
     cb1( e.target.slot )
     cb2( {
@@ -145,25 +85,37 @@ const clibwd = ( cli, cb ) => {
     xclinxt( cli );
     nclidcr( cli, cb );
 }
-export default function Dashboard() {
+export default function Dashboard( { notify, changeName, onCheck, changeDate, cellColor, cellCheck, changer, getResvs, getObject } ) {
     // STATES
-    var [ date, setDate ] = useState( '' )
-    var [ all, setall ] = useState( [] )
-    var [ go, setGo ] = useState( false )
     var [ object, setObject ] = useState(
         {
             Reservations: {},
             num: 0
         }
     )
+    var [ date, setDate ] = useState( '' )
+    var [ all, setall ] = useState( [] )
+    var [ go, setGo ] = useState( false )
     var [ disabled, setDisabled ] = useState( true )
     var [ fname, setFname ] = useState( 'admin' )
     var [ ftp, setFtp ] = useState( [] )
     var [ type, setType ] = useState( 'ps' )
     var [ cli, setCli ] = useState( 1 )
+    var [ monitor, setMonitor ] = useState( 0 )
+    function monitorcb() {
+        setMonitor( prev => prev + 1 )
+    }
     useEffect( () => {
-        getResvs( '', '', setall )
-    }, [ date ] )
+        var t = document.querySelectorAll( '.tab2' )
+        t.forEach( ( i ) => {
+            if ( i.style.backgroundColor == 'rgb(0, 255, 13)' ) {
+                setObject( JSON.parse( i.slot ) )
+            }
+        } )
+    }, [ monitor ] )
+    useEffect( () => {
+        getResvs( '', '', setall, monitor, monitorcb, notify )
+    }, [ getResvs, setall, notify ] )
     useEffect( () => {
         if ( ftp.length == 0 ) { setDisabled( true ) }
         else { setDisabled( false ) }
@@ -212,8 +164,8 @@ export default function Dashboard() {
                                 }
                             }
                             return (
-                                <button className='tab2 sslide' id={ 'sslide' + ( index + 1 ) } key={ item.num } onClick={ () => Objecter( item, setObject ) }
-                                    style={ object.num == item.num ? { backgroundColor: 'rgb(0, 255, 13)' } : {} }>
+                                <button className='tab2 sslide' id={ 'sslide' + ( index + 1 ) } slot={ JSON.stringify( item ) } key={ item.num } onClick={ ( e ) => Objecter( item, setObject ) }
+                                    style={ object.num == item.num ? { backgroundColor: 'rgb(0, 255, 13)', zIndex: 1 } : {} }>
                                     <h2 className='h22'>{ type.toString() + ' no. ' + item.num }</h2>
                                 </button>
                             )
@@ -223,6 +175,7 @@ export default function Dashboard() {
                 </div>
             </div>
             <div className="options">
+                <input type='date' className='date1' name='date' id='date' onChange={ ( e ) => changeDate( e, setDate, clear ) } placeholder='Choose Date' />
                 <table>
                     <thead>
                         <tr>
@@ -231,20 +184,20 @@ export default function Dashboard() {
                             <td>Options</td>
                         </tr>
                     </thead>
-                    <tbody>
+                    <tbody >
                         {
-                            object?.Reservations?.[ date ]?.Resvs?.map(
+                            object?.Reservations?.[ date ]?.Resvs?.sort( ( a, b ) => a.index - b.index ).map(
                                 ( i ) => {
                                     return (
-                                        <tr key={ i.name }>
+                                        <tr key={ i.name + i.tp }>
                                             <td>{ i.name }</td>
                                             <td>{ i.tp.sort().toString().replace( ',', ', ' ) }</td>
                                             <td>
                                                 <span
                                                     style={ { all: 'unset', display: 'flex', alignItems: 'flex-start', justifyContent: 'space-evenly' } }>
-                                                    <button className='opbt' onClick={ () => changer( type, object.num, i.name, i.tp, date, 'red', setall, getResvs, clear, 1 ) } style={ { display: 'inline' } }>Confirm</button>
-                                                    <button className='opbt' onClick={ () => changer( type, object.num, i.name, i.tp, date, 'yellow', setall, getResvs, clear, 1 ) } style={ { display: 'inline' } }>Hold</button>
-                                                    <button className='opbt' onClick={ () => changer( type, object.num, i.name, i.tp, date, 'green', setall, getResvs, clear, 1 ) } style={ { display: 'inline' } }>Cancel</button>
+                                                    <button className='opbt' onClick={ () => changer( type, object.num, i.name, i.tp, date, 'red', setall, getResvs, monitor, monitorcb, clear, 1, notify ) } style={ { display: 'inline' } }>Confirm</button>
+                                                    <button className='opbt' onClick={ () => changer( type, object.num, i.name, i.tp, date, 'yellow', setall, getResvs, monitor, monitorcb, clear, 1, notify ) } style={ { display: 'inline' } }>Hold</button>
+                                                    <button className='opbt' onClick={ () => changer( type, object.num, i.name, i.tp, date, 'green', setall, getResvs, monitor, monitorcb, clear, 1, notify ) } style={ { display: 'inline' } }>Cancel</button>
                                                 </span>
                                             </td>
                                         </tr>
@@ -254,9 +207,8 @@ export default function Dashboard() {
                         }
                     </tbody>
                 </table>
-                <input type='date' className='date1' name='date' id='date' onChange={ ( e ) => changeDate( e, setDate, clear ) } placeholder='Choose Date' />
                 <form id='times'>
-                    <div className='timePeriods' >
+                    <div className='timePeriods'  >
                         {
                             timePeriods.map( ( period ) => {
                                 return (
@@ -284,8 +236,8 @@ export default function Dashboard() {
                     </div>
                 </form>
                 <input type='text' className='nameInput' id='nameInput' placeholder='admin' onChange={ ( e ) => changeName( e, setFname ) } disabled={ disabled } />
-                <button className='opbt' onClick={ () => changer( type, object.num, fname, ftp, date, 'red', setall, getResvs, clear, 1 ) } style={ { display: 'inline' } }>Confirm</button>
-                <button className='opbt' onClick={ () => changer( type, object.num, fname, ftp, date, 'yellow', setall, getResvs, clear, 1 ) } style={ { display: 'inline' } }>Hold</button>
+                <button className='opbt' onClick={ () => changer( type, object.num, fname, ftp, date, 'red', setall, getResvs, monitor, monitorcb, clear, 1, notify ) } style={ { display: 'inline' } }>Confirm</button>
+                <button className='opbt' onClick={ () => changer( type, object.num, fname, ftp, date, 'yellow', setall, getResvs, monitor, monitorcb, clear, 1, notify ) } style={ { display: 'inline' } }>Hold</button>
             </div>
         </>
     )

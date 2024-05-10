@@ -17,7 +17,7 @@ router.put( '/ping/y', async ( req, res ) => {
             if ( !assetResv[ date ] ) {
                 await Ping.updateOne(
                     { "num": num },
-                    { $set: { Reservations: { ...assetResv, [ date ]: { [ color ]: tp, names: [ name ], Resvs: [ { name: name, tp: tp, color: color } ] } } } }
+                    { $set: { Reservations: { ...assetResv, [ date ]: { [ color ]: tp, Resvs: [ { name: name, tp: tp, color: color, index: 1 } ] } } } }
                 ).then(
                     res.send( { sts: 'ok' } )
                 ).catch(
@@ -32,55 +32,75 @@ router.put( '/ping/y', async ( req, res ) => {
                         }
                     } );
                 }
-                var prevnames = assetResv[ date ].names
-                var allnames
-                if ( prevnames.includes( name ) ) {
-                    allnames = [ ...prevnames ]
+                var yellowtp = []
+                var redtp = []
+                var allResvs = assetResv[ date ].Resvs
+                var match = allResvs.filter( ( x ) => {
+                    return x.tp.toString() == tp.toString()
+                } )
+                if ( match.length > 0 ) {
+                    if ( assetResv[ date ][ color ] ) {
+                        yellowtp = [ ...assetResv[ date ][ color ].filter( ( i ) => { return !tp.includes( i ) } ) ]
+                    }
+                    tp.forEach( element => {
+                        yellowtp = [ ...yellowtp, element ]
+                    } );
+                    if ( assetResv[ date ].red ) {
+                        redtp = [ ...assetResv[ date ].red.filter( ( i ) => { return !tp.includes( i ) } ) ]
+                    }
+                    //sort by index then choose arr[index]
+                    var filtered = allResvs.filter( ( i ) => { return i.tp.toString() !== tp.toString() } )
+                    var changed = { name: name, tp: tp, color: color, index: match[ 0 ].index }
+                    console.log( changed )
+                    await Ping.updateOne(
+                        { "num": num },
+                        { $set: { Reservations: { ...assetResv, [ date ]: { red: redtp, yellow: yellowtp, Resvs: [ ...filtered, changed ] } } } }
+                    ).then(
+                        res.send( { sts: 'ok' } )
+                    ).catch(
+                        ( err ) => { res.send( { sts: 'fail', err: err } ) }
+                    )
                 }
                 else {
-                    allnames = [ ...prevnames, name ]
+                    if ( assetResv[ date ][ color ] ) {
+                        yellowtp = [ ...assetResv[ date ][ color ] ]
+                    }
+                    tp.forEach( element => {
+                        yellowtp = [ ...yellowtp, element ]
+                    } );
+                    if ( assetResv[ date ].red ) {
+                        redtp = [ ...assetResv[ date ].red.filter( ( i ) => { return !tp.includes( i ) } ) ]
+                    }
+                    var newResv = { name: name, tp: tp, color: color, index: ( allResvs.length + 1 ) }
+                    await Ping.updateOne(
+                        { "num": num },
+                        { $set: { Reservations: { ...assetResv, [ date ]: { red: redtp, yellow: yellowtp, Resvs: [ ...allResvs, newResv ] } } } }
+                    ).then(
+                        res.send( { sts: 'ok' } )
+                    ).catch(
+                        ( err ) => { res.send( { sts: 'fail', err: err } ) }
+                    )
                 }
-                var yellowtp = []
-                if ( assetResv[ date ][ color ] ) {
-                    yellowtp = [ ...assetResv[ date ][ color ] ]
-                }
-                tp.forEach( element => {
-                    yellowtp = [ ...yellowtp, element ]
-                } );
-                var redtp = []
-                if ( assetResv[ date ].red ) {
-                    redtp = [ ...assetResv[ date ].red.filter( ( i ) => { return !tp.includes( i ) } ) ]
-                }
-                var allResvs
-                allResvs = [ ...assetResv[ date ].Resvs.filter( ( i ) => { return i.name !== name } ), { name: name, tp: tp, color: color } ]
-                await Ping.updateOne(
-                    { "num": num },
-                    { $set: { Reservations: { ...assetResv, [ date ]: { red: redtp, yellow: yellowtp, names: allnames, Resvs: allResvs } } } }
-                ).then(
-                    res.send( { sts: 'ok' } )
-                ).catch(
-                    ( err ) => { res.send( { sts: 'fail', err: err } ) }
-                )
             }
         }
     ).catch(
         ( err ) => { res.send( { sts: 'fail', err: err.message } ) }
     )
 } );
-
 router.put( '/ping/r', async ( req, res ) => {
     var date = req.body.date
     var tp = req.body.tp
     var name = req.body.name
     var num = req.body.num
     var color = req.body.color
+    var admin = req.body.admin
     await Ping.findOne( { num: num } ).then(
         async ( asset ) => {
             let assetResv = asset.Reservations
             if ( !assetResv[ date ] ) {
                 await Ping.updateOne(
                     { "num": num },
-                    { $set: { Reservations: { ...assetResv, [ date ]: { [ color ]: tp, names: [ name ], Resvs: [ { name: name, tp: tp, color: color } ] } } } }
+                    { $set: { Reservations: { ...assetResv, [ date ]: { [ color ]: tp, Resvs: [ { name: name, tp: tp, color: color, index: 1 } ] } } } }
                 ).then(
                     res.send( { sts: 'ok' } )
                 ).catch(
@@ -95,39 +115,60 @@ router.put( '/ping/r', async ( req, res ) => {
                         }
                     } );
                 }
-                var prevnames = assetResv[ date ].names
-                var allnames
-                if ( prevnames.includes( name ) ) {
-                    allnames = [ ...prevnames ]
+                var yellowtp = []
+                var redtp = []
+                var allResvs = assetResv[ date ].Resvs
+                var match = allResvs.filter( ( x ) => {
+                    return x.tp.toString() == tp.toString()
+                } )
+                if ( match.length > 0 ) {
+                    if ( assetResv[ date ][ color ] ) {
+                        redtp = [ ...assetResv[ date ][ color ].filter( ( i ) => { return !tp.includes( i ) } ) ]
+                    }
+                    tp.forEach( element => {
+                        redtp = [ ...redtp, element ]
+                    } );
+                    if ( assetResv[ date ].yellow ) {
+                        yellowtp = [ ...assetResv[ date ].yellow.filter( ( i ) => { return !tp.includes( i ) } ) ]
+                    }
+                    //sort by index then choose arr[index]
+                    var filtered = allResvs.filter( ( i ) => { return i.tp.toString() !== tp.toString() } )
+                    var changed = { name: name, tp: tp, color: color, index: match[ 0 ].index }
+                    console.log( filtered )
+                    console.log( changed )
+                    await Ping.updateOne(
+                        { "num": num },
+                        { $set: { Reservations: { ...assetResv, [ date ]: { red: redtp, yellow: yellowtp, Resvs: [ ...filtered, changed ] } } } }
+                    ).then(
+                        res.send( { sts: 'ok' } )
+                    ).catch(
+                        ( err ) => { res.send( { sts: 'fail', err: err } ) }
+                    )
                 }
                 else {
-                    allnames = [ ...prevnames, name ]
+                    if ( assetResv[ date ][ color ] ) {
+                        redtp = [ ...assetResv[ date ][ color ] ]
+                    }
+                    tp.forEach( element => {
+                        redtp = [ ...redtp, element ]
+                    } );
+                    if ( assetResv[ date ].yellow ) {
+                        yellowtp = [ ...assetResv[ date ].yellow.filter( ( i ) => { return !tp.includes( i ) } ) ]
+                    }
+                    var newResv = { name: name, tp: tp, color: color, index: ( allResvs.length + 1 ) }
+                    await Ping.updateOne(
+                        { "num": num },
+                        { $set: { Reservations: { ...assetResv, [ date ]: { red: redtp, yellow: yellowtp, Resvs: [ ...allResvs, newResv ] } } } }
+                    ).then(
+                        res.send( { sts: 'ok' } )
+                    ).catch(
+                        ( err ) => { res.send( { sts: 'fail', err: err } ) }
+                    )
                 }
-                var redtp = []
-                if ( assetResv[ date ][ color ] ) {
-                    redtp = [ ...assetResv[ date ][ color ] ]
-                }
-                tp.forEach( element => {
-                    redtp = [ ...redtp, element ]
-                } );
-                var yellowtp = []
-                if ( assetResv[ date ].yellow ) {
-                    yellowtp = assetResv[ date ].yellow.filter( ( i ) => { return !tp.includes( i ) } )
-                }
-                var allResvs
-                allResvs = [ ...assetResv[ date ].Resvs.filter( ( i ) => { return i.name !== name } ), { name: name, tp: tp, color: color } ]
-                await Ping.updateOne(
-                    { "num": num },
-                    { $set: { Reservations: { ...assetResv, [ date ]: { yellow: yellowtp, red: redtp, names: allnames, Resvs: allResvs } } } }
-                ).then(
-                    res.send( { sts: 'ok' } )
-                ).catch(
-                    ( err ) => { res.send( { sts: 'fail', err: err.message } ) }
-                )
             }
         }
     ).catch(
-        ( err ) => { res.send( { sts: 'fail', err: err } ) }
+        ( err ) => { res.send( { sts: 'fail', err: err.message } ) }
     )
 } );
 
@@ -136,15 +177,17 @@ router.put( '/ping/g', async ( req, res ) => {
     var tp = req.body.tp
     var name = req.body.name
     var num = req.body.num
+    var admin = req.body.admin
+
     await Ping.findOne( { num: num } ).then(
         async ( asset ) => {
             let assetResv = asset.Reservations
             var unfilteredResvs = assetResv[ date ].Resvs
-            var allResvs = unfilteredResvs?.filter( ( i ) => { return i.name !== name } )
+            var allResvs = unfilteredResvs?.filter( ( i ) => { return i.tp.toString() !== tp.toString() } )
             if ( allResvs.length == 0 || !allResvs ) {
                 await Ping.updateOne(
                     { "num": num },
-                    { $set: { Reservations: { ...assetResv, [ date ]: { red: [], yellow: [], names: [], Resvs: [] } } } }
+                    { $set: { Reservations: { ...assetResv, [ date ]: { red: [], yellow: [], Resvs: [] } } } }
                 ).then(
                     res.send( { sts: 'ok' } )
                 ).catch(
@@ -160,8 +203,6 @@ router.put( '/ping/g', async ( req, res ) => {
                         }
                     } );
                 }
-                var prevnames = assetResv[ date ].names
-                var allnames = prevnames.filter( ( i ) => { return i !== name } )
                 var yellowtp = []
                 var redtp = []
                 if ( assetResv[ date ].yellow ) {
@@ -172,7 +213,7 @@ router.put( '/ping/g', async ( req, res ) => {
                 }
                 await Ping.updateOne(
                     { "num": num },
-                    { $set: { Reservations: { ...assetResv, [ date ]: { red: redtp, yellow: yellowtp, names: allnames, Resvs: allResvs } } } }
+                    { $set: { Reservations: { ...assetResv, [ date ]: { red: redtp, yellow: yellowtp, Resvs: allResvs } } } }
                 ).then(
                     res.send( { sts: 'ok' } )
                 ).catch(

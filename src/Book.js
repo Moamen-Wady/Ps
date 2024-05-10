@@ -1,20 +1,11 @@
 import React, { useEffect, useState } from 'react'
 import "./styles.css"
 import { Link, Outlet } from 'react-router-dom'
-import api from './api'
-export default function Book() {
-    async function getAll() {
-        await api.get( `/getall` )
-            .then(
-                ( data ) => {
-                    if ( data.data.sts !== 'ok' ) { alert( 'network error' ) }
-                    else { setAll( data.data.all ); }
-                } )
-            .catch( () => { alert( 'network error' ) } )
-    }
+export default function Book( { notify, getResvs, dummy } ) {
     useEffect(
-        () => { getAll() }
-        , [] )
+        () => {
+            getResvs( '', '', setAll, dummy, notify )
+        }, [ getResvs, notify ] )
     var [ all, setAll ] = useState( [] )
     var [ type, setType ] = useState( 'ps' )
     const typerr = ( e ) => {
