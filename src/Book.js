@@ -4,7 +4,7 @@ import { Link, Outlet } from 'react-router-dom'
 export default function Book( { notify, getResvs, dummy } ) {
     useEffect(
         () => {
-            getResvs( '', '', setAll, dummy, notify )
+            getResvs( '', '', setAll, 0, dummy, notify )
         }, [ getResvs, notify ] )
     var [ all, setAll ] = useState( [] )
     var [ type, setType ] = useState( 'ps' )
