@@ -95,7 +95,7 @@ function App() {
   const notify = ( e, msg ) => {
     toast[ e ]( msg, {
       position: "top-right",
-      autoClose: 1500,
+      autoClose: 2200,
       hideProgressBar: false,
       closeOnClick: true,
       pauseOnHover: true,
