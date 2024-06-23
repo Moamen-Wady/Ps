@@ -10,7 +10,8 @@ import Asset from './asset';
 import Dashboard from './dashboard';
 function dummy( x ) {
   return
-} const getResvs = async ( type, num, cb, monitor, monitorcb, alertcb ) => {
+}
+const getResvs = async ( type, num, cb, monitor, monitorcb, alertcb ) => {
   await api.get( `/getall` )
     .then(
       ( data ) => {
