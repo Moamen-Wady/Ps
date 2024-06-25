@@ -115,6 +115,7 @@ export default function Dashboard( { notify, changeName, onCheck, changeDate, ce
     }, [ monitor ] )
     useEffect( () => {
         getResvs( '', '', setall, monitor, monitorcb, notify )
+        notify( 'info', 'Free version, Loading may take a minute to finish on the first load' )
     }, [ getResvs, setall, notify ] )
     useEffect( () => {
         if ( ftp.length == 0 ) { setDisabled( true ) }
