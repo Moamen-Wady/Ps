@@ -1,8 +1,8 @@
-import { useEffect, useState, memo } from "react";
+import { useEffect, useState, memo, useCallback } from "react";
 import { Outlet, Link } from "react-router-dom";
 export default memo(function Book({ notify, getResvs, dummy }) {
   useEffect(() => {
-    getResvs("", "", setAll, 0, dummy, notify);
+    getResvs(setAll, 0, dummy, notify);
     notify(
       "info",
       "Free version, Loading may take a minute to finish on the first load"
@@ -10,14 +10,14 @@ export default memo(function Book({ notify, getResvs, dummy }) {
   }, []);
   const [all, setAll] = useState([]);
   const [type, setType] = useState("ps");
-  const typerr = (e) => {
+  const typerr = useCallback((e) => {
     setType(e.target.slot);
-  };
+  }, []);
   return (
     <main>
       <h1>Welcome, Gamer...</h1>
       <h1>
-        <i className="rnb">Are</i> <i className="rnb">You</i>{" "}
+        <i className="rnb">Are</i> <i className="rnb">You</i>
         <i className="rnb">Ready</i>?
       </h1>
       <h3 className="h3">Choose Your Desired Game & Room</h3>
@@ -68,7 +68,7 @@ export default memo(function Book({ notify, getResvs, dummy }) {
                     <h4 className="h4">
                       {type.toString() + " no. " + item.num}
                     </h4>
-                    <img className="assetimg" src="pst.jpg" alt="" />
+                    <img className="assetimg" src="/pst.jpg" alt="" />
                   </div>
                 </Link>
               );

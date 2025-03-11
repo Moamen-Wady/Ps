@@ -136,9 +136,10 @@ export default memo(function Dashboard({
   const [type, setType] = useState("ps");
   const [cli, setCli] = useState(1);
   const [monitor, setMonitor] = useState(0);
-  function monitorCallBack() {
+  const monitorCallBack = useCallback(() => {
     setMonitor((prev) => prev + 1);
-  }
+  }, []);
+
   useEffect(() => {
     let t = document.querySelectorAll(".tab2");
     t.forEach((i) => {
@@ -147,13 +148,15 @@ export default memo(function Dashboard({
       }
     });
   }, [monitor]);
+
   useEffect(() => {
-    getResvs("", "", setall, monitor, monitorCallBack, notify);
+    getResvs(setall, monitorCallBack, notify);
     notify(
       "info",
       "Free version, Loading may take a minute to finish on the first load"
     );
   }, []);
+
   useEffect(() => {
     if (ftp.length == 0) {
       setDisabled(true);
@@ -161,8 +164,9 @@ export default memo(function Dashboard({
       setDisabled(false);
     }
   }, [ftp.length]);
+
   //Clear CallBack
-  const clear = () => {
+  const clear = useCallback(() => {
     setFtp([]);
     setFname("admin");
     document.querySelectorAll("input.tpchb").forEach((i) => {
@@ -171,13 +175,15 @@ export default memo(function Dashboard({
     document.querySelectorAll("input#nameInput").forEach((i) => {
       i.value = "";
     });
-  };
+  }, []);
+
   //SLIDER
   const sslider = useCallback(() => {
     setTimeout(() => {
       document.getElementById("sleft").click();
     }, 100);
   }, []);
+
   return (
     <>
       <div className="fulltablecont">
@@ -220,8 +226,7 @@ export default memo(function Dashboard({
               className="homebtn"
               onClick={() => clifwd(cli, setCli)}
             >
-              {" "}
-              <img src="l.png" alt=" " />{" "}
+              <img src="/l.png" alt=" " />
             </button>
             {all?.[type]
               ?.sort((a, b) => a.num - b.num)
@@ -256,8 +261,7 @@ export default memo(function Dashboard({
               className="homebtn"
               onClick={() => clibwd(cli, setCli)}
             >
-              {" "}
-              <img src="r.png" alt=" " />{" "}
+              <img src="/r.png" alt=" " />
             </button>
           </div>
         </div>
@@ -308,7 +312,6 @@ export default memo(function Dashboard({
                             "red",
                             setall,
                             getResvs,
-                            monitor,
                             monitorCallBack,
                             clear,
                             1,
@@ -331,7 +334,6 @@ export default memo(function Dashboard({
                             "yellow",
                             setall,
                             getResvs,
-                            monitor,
                             monitorCallBack,
                             clear,
                             1,
@@ -354,7 +356,6 @@ export default memo(function Dashboard({
                             "green",
                             setall,
                             getResvs,
-                            monitor,
                             monitorCallBack,
                             clear,
                             1,
@@ -427,7 +428,6 @@ export default memo(function Dashboard({
               "red",
               setall,
               getResvs,
-              monitor,
               monitorCallBack,
               clear,
               1,
@@ -450,7 +450,6 @@ export default memo(function Dashboard({
               "yellow",
               setall,
               getResvs,
-              monitor,
               monitorCallBack,
               clear,
               1,

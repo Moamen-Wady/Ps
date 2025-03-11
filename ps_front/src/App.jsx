@@ -3,7 +3,7 @@ import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
 import { Slide, ToastContainer, toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 import "./styles.css";
-import api from "./api";
+import api, { isCancel } from "./api";
 import Loading from "./Loading";
 import RouteChangeHandler from "./RouteChangeHandler";
 
@@ -15,33 +15,31 @@ function dummy() {
   return;
 }
 const getResvs = async (callBack, monitorCallBack, alertCallBack) => {
-  await api
-    .get(`/getall`)
-    .then((data) => {
-      if (data.data.sts !== "ok") {
-        alertCallBack("error", "network error");
-      } else {
-        callBack(data.data.all);
-        monitorCallBack();
-      }
-    })
-    .catch(() => {
+  try {
+    const { data } = await api.get("/getall");
+
+    if (data?.sts === "ok") {
+      callBack(data.all);
+      monitorCallBack();
+    } else {
       alertCallBack("error", "network error");
-    });
+    }
+  } catch (error) {
+    alertCallBack("error", "network error");
+  }
 };
 const getObject = async (type, num, callBack, alertCallBack) => {
-  await api
-    .get(`/${type}/${num}`)
-    .then((data) => {
-      if (data.data.sts !== "ok") {
-        alertCallBack("error", "network error");
-      } else {
-        callBack(data.data.object);
-      }
-    })
-    .catch(() => {
+  try {
+    const { data } = await api.get(`/${type}/${num}`);
+
+    if (data?.sts === "ok") {
+      callBack(data.object);
+    } else {
       alertCallBack("error", "network error");
-    });
+    }
+  } catch (error) {
+    alertCallBack("error", "network error");
+  }
 };
 const changeName = (e, callBack) => {
   callBack(e.target.value);
@@ -86,54 +84,45 @@ const changer = async (
   color,
   callBack,
   getCallBack,
-  monitor,
   monitorCallBack,
   clearCallBack,
   admin,
   alertCallBack
 ) => {
-  await api
-    .put(`/${type}/${color.slice(0, 1)}`, {
-      num: num,
-      name: name,
-      tp: tp,
-      date: date,
-      color: color,
-      admin: admin,
-    })
-    .then(async (data) => {
-      if (data.data.sts == "ok") {
-        await getCallBack(
-          type,
-          num,
-          callBack,
-          monitor,
-          monitorCallBack,
-          alertCallBack
-        );
-        clearCallBack();
-        alertCallBack("success", "Your Reservation Was Saved");
-      } else {
-        if (data.data.err == "tp") {
-          await getCallBack(
-            type,
-            num,
-            callBack,
-            monitor,
-            monitorCallBack,
-            alertCallBack
-          );
-          clearCallBack();
-          alertCallBack(
-            "error",
-            "We are sorry, the time periods were just reserved By another User, please try again"
-          );
-        } else {
-          alertCallBack("error", data.data.err);
-        }
-      }
-    })
-    .catch((err) => alertCallBack("error", err.message));
+  try {
+    const { data } = await api.put(`/${type}/${color[0]}`, {
+      num,
+      name,
+      tp,
+      date,
+      color,
+      admin,
+    });
+
+    if (data?.sts === "ok") {
+      await getCallBack(type, num, callBack, alertCallBack);
+      clearCallBack();
+      alertCallBack("success", "Your Reservation Was Saved");
+      return;
+    }
+
+    if (data?.error === "tp") {
+      await getCallBack(type, num, callBack, alertCallBack);
+      clearCallBack();
+      alertCallBack(
+        "error",
+        "We are sorry, the time periods were just reserved by another user, please try again."
+      );
+      return;
+    }
+
+    alertCallBack("error", data?.error || "Unknown error");
+  } catch (error) {
+    alertCallBack("error", error.message);
+  }
+  finally{
+    monitorCallBack();
+  }
 };
 
 function App() {

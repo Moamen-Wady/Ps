@@ -1,4 +1,4 @@
-import { useState, useEffect, memo } from "react";
+import { useState, useEffect, memo, useCallback } from "react";
 const timePeriods = [
   "12:00",
   "12:30",
@@ -25,6 +25,7 @@ const timePeriods = [
   "11:00",
   "11:30",
 ];
+
 export default memo(function Asset({
   notify,
   changeName,
@@ -50,6 +51,7 @@ export default memo(function Asset({
   let infoarr = sliced[1].split("/");
   let type = infoarr[0];
   let num = infoarr[1];
+
   useEffect(() => {
     if (tp.length == 0) {
       setDisabled(true);
@@ -57,10 +59,12 @@ export default memo(function Asset({
       setDisabled(false);
     }
   }, [tp.length]);
+
   useEffect(() => {
-    getObject(type, num, setObject, 0, dummy, notify);
-  }, [getObject, type, num, notify]);
-  const clear = () => {
+    getObject(type, num, setObject, notify);
+  }, [getObject, type, num]);
+
+  const clear = useCallback(() => {
     setTp([]);
     setName("");
     document.querySelectorAll("input.tpchb").forEach((i) => {
@@ -69,12 +73,14 @@ export default memo(function Asset({
     document.querySelectorAll("input#nameInput").forEach((i) => {
       i.value = "";
     });
-  };
-  const nameCheck = async () => {
+  }, []);
+
+  const nameCheck = useCallback(async () => {
     if (date == "" || name == "" || tp.length == 0) {
-      notify("PLEASE CHOOSE DATE, TIME PERIODS AND ENTER YOUR NAME");
+      notify("please choose date, times and enter your name");
       return;
     }
+    //the next filter is for malfunctions or possible walkarounds around the code
     let tpff = tp.filter((i) => {
       return (
         object?.Reservations?.[date]?.yellow?.includes(i) ||
@@ -83,7 +89,9 @@ export default memo(function Asset({
     });
     if (tpff.length > 0) {
       await getObject(type, num, setObject, notify);
-      notify("Time was just Reserved, please rebook Your desired time");
+      notify(
+        "Chosen time periods are reserved, please rebook your desired times"
+      );
       clear();
     } else {
       changer(
@@ -102,7 +110,7 @@ export default memo(function Asset({
         notify
       );
     }
-  };
+  }, []);
   return (
     <>
       <div className="hicont">
